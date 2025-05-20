@@ -1,5 +1,5 @@
-- name: kubernetes
-  alias: [kget, kgetall, kubectl, kube, kubernetes, k]
+- name: kubectl-get
+  alias: [kget, kgetall]
   syntax: |
     kubectl get pods                 # list pods in current ns
     kubectl get svc                  # list services
@@ -33,6 +33,8 @@
   syntax: |
     kubectl logs mypod              # logs from pod
     kubectl logs mypod -c mycontainer # logs from specific container
+    kubectl logs -f mypod           # stream logs
+    kubectl logs --previous mypod  # get logs from previous pod crash
   description: View logs from pods/containers
 
 - name: kubectl-exec
@@ -80,3 +82,55 @@
     kubectl get ns                    # list namespaces
     kubectl config set-context --current --namespace=my-namespace  # switch ns
   description: Namespace management
+
+- name: kubectl-create
+  alias: [kcreate]
+  syntax: |
+    kubectl create deployment nginx --image=nginx         # create deployment
+    kubectl create service clusterip mysvc --tcp=80:80     # create svc
+    kubectl create configmap mycfg --from-literal=key=val  # create configmap
+  description: Imperative creation of K8s objects
+
+- name: kubectl-autoscale
+  alias: [kauto]
+  syntax: |
+    kubectl autoscale deployment nginx --cpu-percent=50 --min=1 --max=5  # HPA setup
+  description: Horizontal Pod Autoscaler via kubectl
+
+- name: kubectl-rollout
+  alias: [kroll]
+  syntax: |
+    kubectl rollout status deployment/nginx     # rollout status
+    kubectl rollout history deployment/nginx    # rollout history
+    kubectl rollout undo deployment/nginx       # undo to previous
+  description: Manage deployment rollouts
+
+- name: kubectl-scale
+  alias: [kscale]
+  syntax: |
+    kubectl scale deployment nginx --replicas=5 # scale pods manually
+  description: Manually scale deployments
+
+- name: kubectl-edit
+  alias: [kedit]
+  syntax: |
+    export KUBE_EDITOR="nano"                  # set kube editor as nano
+    kubectl edit deployment nginx              # edit live resource
+  description: Open resource in editor to edit live config
+- name: kubeadm-init
+  alias: [kinit]
+  syntax: |
+    kubeadm init --pod-network-cidr=10.244.0.0/16  # init master node
+  description: Initialize master node
+
+- name: kubeadm-join
+  alias: [kjoin]
+  syntax: |
+    kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+  description: Join worker node to the cluster
+
+- name: kubeadm-reset
+  alias: [kreset]
+  syntax: |
+    kubeadm reset --force             # reset cluster config
+  description: Reset kubeadm cluster setup
