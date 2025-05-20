@@ -1,0 +1,29 @@
+languages:
+  - name: golang
+    title: "GoLang Cheatsheet"
+    version: "1.0.0"
+    description: "Minimal GoLang syntax reference for daily use."
+    database: "golang/golang.yaml"
+    alias:
+      - go
+      - g
+      - golang
+
+  - name: python
+    title: "Python Cheatsheet"
+    version: "1.0.0"
+    description: "Essential Python commands and syntax."
+    database: "python/python.yaml"
+    alias:
+      - py
+      - python
+
+  - name: linux
+    title: "Linux CLI Cheatsheet"
+    version: "1.0.0"
+    description: "Everyday Linux commands and sysadmin shortcuts."
+    database: "linux/linux.yaml"
+    alias:
+      - linux
+      - bash
+      - cli
