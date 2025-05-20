@@ -81,6 +81,13 @@
     } else {  fmt.Println("Small number")}
   description: If-else condition
 
+- name: for loop
+  alias: [loop, range, for]
+  syntax: |
+    for i := 0; i < n; i++ { /* logic */ }         // standard loop
+    for i := range data { /* logic */ }            // range-based
+    for condition { /* logic */ }                  // conditional loop
+
 - name: make_command
   alias: [make, makes]
   syntax: |
@@ -156,23 +163,34 @@
 - name: files
   alias: [file,io]
   syntax: |
-    f, err := os.Open("file.txt")
+    // --- Read file ---
+    f, err := os.Open("file.txt")                    // open file in read-only mode
     if err != nil { log.Fatal(err) }
-    defer f.Close() // execute at end of function
-    buf := make([]byte, 100)
-    n, err := f.Read(buf)
-    fmt.Println(string(buf[:n]))
+    defer f.Close()
+    buf := make([]byte, 100)                         // create 100-byte buffer
+    n, _ := f.Read(buf)                              // read up to 100 bytes
+    fmt.Println(string(buf[:n]))                     // print the read data
+
+    // --- Write file (overwrite if exists) ---
+    data := []byte("hello")                          
+    os.WriteFile("new.txt", data, 0644)              // write data with rw-r--r-- perms
+
+    // --- Append to file ---
+    af, err := os.OpenFile("new.txt", os.O_APPEND|os.O_WRONLY, 0644) // open in append mode
+    defer af.Close()
+    af.WriteString("\nworld")                        // append string to end of file
   description: File open, read, close basics
 
 - name: network
   alias: [net,socket]
   syntax: |
-    ln, _ := net.Listen("tcp", ":8080")
-    conn, _ := ln.Accept()
-    buf := make([]byte, 512)
-    n, _ := conn.Read(buf)
-    fmt.Println(string(buf[:n]))
-    conn.Write([]byte("pong"))
+    ln, _ := net.Listen("tcp", ":8080")         // listen on port 8080
+    conn, _ := ln.Accept()                      // accept incoming connection
+    defer conn.Close()
+    buf := make([]byte, 512)                    // buffer to read client data
+    n, _ := conn.Read(buf)                      // read from connection
+    fmt.Println(string(buf[:n]))                // print received data
+    conn.Write([]byte("pong"))                  // send response to client
   description: Basic TCP server accept and respond
   
 - name: go_command
@@ -180,12 +198,9 @@
   syntax: |
     go help                 // general help
     go help <command>      // help for specific command (e.g., go help build)
-
     go doc fmt             // show docs for std lib 'fmt'
     go doc fmt.Println     // show doc for specific function
-
     go list std            // list all standard packages
-
     go env                 // show Go environment setup
     go version             // current Go version
     go mod tidy            // clean up go.mod/go.sum
