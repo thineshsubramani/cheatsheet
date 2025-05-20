@@ -1,0 +1,211 @@
+- name: c-basics
+  alias: [c]
+  syntax: |
+    #include <stdio.h>     // std I/O header
+
+    int main() {
+        printf("Hello, world!\n"); // print to stdout
+        return 0;
+    }
+  description: Minimal C program structure
+
+- name: variables-types
+  alias: [types]
+  syntax: |
+    int i = 10;             // Integer
+    float f = 3.14f;        // Float
+    double d = 3.14159;     // Double precision
+    char c = 'A';           // Char literal
+    unsigned int u = 42;    // No negative
+  description: Primitive data types
+
+- name: control-flow
+  alias: [flow]
+  syntax: |
+    if (x > 0) { ... }      // Conditional
+    else { ... }
+
+    for (int i = 0; i < 10; i++) { }  // Counting loop
+    while (x < 5) { }       // Condition loop
+    do { } while (x < 5);   // Post-test loop
+  description: Conditional and loop control
+
+- name: pointers
+  alias: [ptr]
+  syntax: |
+    int a = 5;
+    int *p = &a;            // Address of a
+    *p = 10;                // Modify through pointer
+  description: Core of C memory control
+
+- name: arrays-strings
+  alias: [arr, str]
+  syntax: |
+    int arr[3] = {1, 2, 3};         // Static array
+    char name[] = "thinesh";        // Null-terminated string
+    char *dyn = malloc(10);         // Dynamic string
+  description: Arrays & char strings
+
+- name: structs-unions
+  alias: [struct]
+  syntax: |
+    struct Point {
+        int x, y;
+    };
+
+    union Data {
+        int i;
+        float f;
+    };
+  description: Data packing types
+
+- name: memory-management
+  alias: [mem, alloc]
+  syntax: |
+    int *arr = malloc(5 * sizeof(int)); // Allocate
+    memset(arr, 0, 20);                 // Init
+    free(arr);                          // Cleanup
+  description: malloc/calloc/free/memset
+
+- name: file-io
+  alias: [file]
+  syntax: |
+    FILE *fp = fopen("data.txt", "r");
+    fscanf(fp, "%s", buf);     // Read from file
+    fclose(fp);
+  description: File open/read/close
+
+- name: preprocessor
+  alias: [macro, cpp]
+  syntax: |
+    #define PI 3.14
+    #ifdef DEBUG
+    #endif
+    #include "mylib.h"
+  description: Macros, includes, guards
+
+- name: header-files
+  alias: [h]
+  syntax: |
+    // utils.h
+    int square(int x);
+
+    // utils.c
+    int square(int x) { return x * x; }
+  description: Modularization
+
+- name: bitwise
+  alias: [bit]
+  syntax: |
+    int flags = 0x01;
+    flags |= 0x02;    // Set bit
+    flags &= ~0x01;   // Clear bit
+    if (flags & 0x02) // Check bit
+  description: Bit-level flags and logic
+
+- name: command-line-args
+  alias: [args]
+  syntax: |
+    int main(int argc, char *argv[]) {
+        printf("Arg 1: %s\n", argv[1]);
+    }
+  description: Command-line input parsing
+
+- name: makefile
+  alias: [make]
+  syntax: |
+    all:
+        gcc -o app main.c utils.c
+  description: Basic Makefile target
+
+- name: gdb-debug
+  alias: [gdb]
+  syntax: |
+    gcc -g main.c
+    gdb ./a.out
+    break main
+    run
+    print var
+  description: Debug line-by-line
+
+- name: compile-optimize
+  alias: [gcc]
+  syntax: |
+    gcc -Wall -O2 main.c -o main  // All warnings + optimization
+    gcc -std=c99 main.c           // Use C99 standard
+  description: Performance + warnings
+
+- name: memory-check
+  alias: [valgrind]
+  syntax: |
+    valgrind ./main              // Check leaks
+    valgrind --leak-check=full ./main
+  description: Leak detection tool
+
+- name: system-calls
+  alias: [syscall]
+  syntax: |
+    #include <unistd.h>
+    write(1, "yo\n", 3);         // stdout
+  description: Low-level syscall usage
+
+- name: signals
+  alias: [signal]
+  syntax: |
+    #include <signal.h>
+    void handler(int sig) { ... }
+    signal(SIGINT, handler);     // Ctrl+C handler
+  description: Handle signals like kill/INT
+
+- name: threads
+  alias: [pthread]
+  syntax: |
+    #include <pthread.h>
+    pthread_create(&tid, NULL, fn, NULL);
+    pthread_join(tid, NULL);
+  description: POSIX threading
+
+- name: networking
+  alias: [socket]
+  syntax: |
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0); // TCP socket
+    bind(sockfd, ...);
+    listen(sockfd, 5);
+  description: TCP/UDP socket API
+
+- name: fork-exec
+  alias: [fork]
+  syntax: |
+    pid_t pid = fork();
+    if (pid == 0) { execl("/bin/ls", "ls", NULL); }
+  description: Process spawning and exec
+
+- name: ipc-pipe
+  alias: [ipc]
+  syntax: |
+    int fd[2];
+    pipe(fd); // fd[0]=read, fd[1]=write
+  description: Simple interprocess comm
+
+- name: mmap-sharedmem
+  alias: [mmap]
+  syntax: |
+    void *ptr = mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+  description: Shared memory mapping
+
+- name: atomic
+  alias: [atomic]
+  syntax: |
+    #include <stdatomic.h>
+    atomic_int counter;
+    atomic_fetch_add(&counter, 1);
+  description: Lock-free shared state
+
+- name: linux-c-dirs
+  alias: [dirs]
+  syntax: |
+    /usr/include/        // Header files
+    /lib/x86_64-linux-gnu/ // Compiled libraries
+    /proc/self/maps      // Memory layout of running process
+    /dev/null            // Data sink
+  description: Important C + Linux system paths
