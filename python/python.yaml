@@ -1,0 +1,23 @@
+- name: all
+  syntax: compiled
+  description: Aggregated Python syntax sections
+
+- name: list
+  syntax: |
+    lst = [1, 2, 3]       # define list
+    lst.append(4)         # add element
+    lst.pop(0)            # remove first element
+  description: Python lists basics
+
+- name: dict
+  syntax: |
+    d = {'a': 1, 'b': 2}  # define dict
+    d['c'] = 3            # add key-value
+    del d['a']            # remove key
+  description: Python dictionaries basics
+
+- name: function
+  syntax: |
+    def add(a, b):
+        return a + b
+  description: Python functions
