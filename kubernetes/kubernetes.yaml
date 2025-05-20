@@ -58,24 +58,6 @@
     kubectl cp /local/path mypod:/path/in/pod    # copy to pod
   description: Copy files to/from containers
 
-- name: kubeadm-init
-  alias: [kinit]
-  syntax: |
-    kubeadm init --pod-network-cidr=10.244.0.0/16  # init master node
-  description: Initialize master node
-
-- name: kubeadm-join
-  alias: [kjoin]
-  syntax: |
-    kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
-  description: Join worker node to the cluster
-
-- name: kubeadm-reset
-  alias: [kreset]
-  syntax: |
-    kubeadm reset --force             # reset cluster config
-  description: Reset kubeadm cluster setup
-
 - name: kubectl-ns
   alias: [kns]
   syntax: |
@@ -117,20 +99,13 @@
     export KUBE_EDITOR="nano"                  # set kube editor as nano
     kubectl edit deployment nginx              # edit live resource
   description: Open resource in editor to edit live config
-- name: kubeadm-init
-  alias: [kinit]
+  
+- name: kubeadm
+  alias: [kadm,kubeadm]
   syntax: |
     kubeadm init --pod-network-cidr=10.244.0.0/16  # init master node
-  description: Initialize master node
-
-- name: kubeadm-join
-  alias: [kjoin]
-  syntax: |
+    kubeadm token create --print-join-command      # Create token
     kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
-  description: Join worker node to the cluster
-
-- name: kubeadm-reset
-  alias: [kreset]
-  syntax: |
     kubeadm reset --force             # reset cluster config
-  description: Reset kubeadm cluster setup
+  description: Kubeadm commands
+
