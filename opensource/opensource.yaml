@@ -1,0 +1,97 @@
+best-practices:
+  - name: branching-strategy
+    alias: [branching, git-branch,branches, branch, branching-strategy,branch-names]
+    syntax: |
+      main                # production-ready code
+      develop             # integration branch for features
+      feature/xyz         # new feature branch
+      bugfix/issue-123    # fix specific bug
+      hotfix/critical-fix # urgent fix branch
+      release/v1.2.0      # prepare release branch
+    description: "Standard Git branch naming conventions."
+
+  - name: commit-messages
+    alias: [commit-msg, git-msg, commit]
+    syntax: |
+      feat: add new payment method           # new feature
+      fix: correct null pointer in parser    # bug fix
+      docs: update README with examples      # documentation
+      style: format code with gofmt           # formatting only
+      refactor: improve code readability     # refactor code
+      test: add unit tests for user module   # testing
+      chore: update dependencies              # maintenance
+    description: "Conventional commit message types for clarity and automation."
+
+  - name: tagging
+    alias: [git-tag, release-tag, tag, tags]
+    syntax: |
+      v1.2.3             # semantic version
+      v1.2.3-beta        # pre-release
+      git tag -a v1.2.3 -m "Release v1.2.3"
+      git push origin v1.2.3
+    description: "SemVer style tags for all stable/prod builds."
+
+  - name: release-versioning
+    alias: [semver,release,ver,version,versioning]
+    syntax: |
+      MAJOR.MINOR.PATCH
+      2.1.0  # major=2, minor=1, patch=0
+      2.1.1  # patch update, backward-compatible bug fixes
+      3.0.0  # major update, incompatible API changes
+      Major = breaking change
+      Minor = backward-compatible feature
+      Patch = fixes
+    description: "Semantic Versioning (SemVer) best practice."
+
+  - name: open-source-licenses
+    alias: [license,licenses,os,opensource]
+    syntax: |
+      MIT       # permissive, simple, popular license
+      Apache-2.0 # permissive with patent rights
+      GPL-3.0    # copyleft, requires source sharing
+      BSD-3-Clause # permissive, minimal restrictions
+      MPL-2.0    # weak copyleft, file-level
+    description: "Common open-source licenses and their characteristics."
+
+ - name: issue-naming
+    alias: [git-issues, issue-title]
+    syntax: |
+      [BUG] Login crash on Safari
+      [FEATURE] Add 2FA to login
+      [DOCS] Update install guide
+      [TASK] Clean up old S3 buckets
+      [REFACTOR] Simplify API handler logic
+    description: "Standardize issue titles for clarity & filtering."
+
+  - name: bugfix-naming
+    alias: [bugfix, fixes]
+    syntax: |
+      fix/<issue-id>-<desc>
+      fix/345-null-check-order  # clear trace to issue 345
+      fix/api-timeout-fallback  # descriptive if not tied to issue
+    description: "Prefix with `fix/` and optionally link to issue."
+
+  - name: changelog
+    alias: [release-notes]
+    syntax: |
+      ## [1.2.3] - 2025-05-20
+      ### Added
+      - feat: support dark mode
+      ### Fixed
+      - fix: crash on mobile view
+      ### Changed
+      - refactor: simplified menu nav
+    description: "Auto-generate changelogs via commit messages or tools like standard-version."
+
+  - name: labels
+    alias: [issue-labels, github-labels]
+    syntax: |
+      bug           # something is broken
+      enhancement   # new feature
+      documentation # doc-related change
+      question      # need clarification
+      good-first-issue # beginner friendly
+      help-wanted   # anyone can contribute
+    description: "GitHub labels to track issue types and contribution needs."
+
+    
