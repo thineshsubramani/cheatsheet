@@ -26,4 +26,24 @@ languages:
     alias:
       - linux
       - bash
-      - cli
+      - ubuntu
+  
+  - name: kubernetes
+    title: "Kubernetes Cheatsheet"
+    version: "1.28.0"
+    description: "kubectl, kubeadm commands with advanced usage and quick refs."
+    database: "kubernetes/kubernetes.yaml"
+    alias:
+      - k8s
+      - kube
+      - kubectl
+      - k
+
+  - name: git
+    title: "Git Cheatsheet"
+    version: "2.45.0"
+    description: "Core and advanced Git commands for source control."
+    database: "git/git.yaml"
+    alias:
+      - git
+      - g
