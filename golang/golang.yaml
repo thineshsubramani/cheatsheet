@@ -1,27 +1,31 @@
 - name: all
+  alias: [full, allinone]
   syntax: compiled
   description: Aggregated GoLang syntax sections
 
 - name: array
-  alias: [arr,a]
+  alias: [arr,a,array]
   syntax: |
     arr := [3]int{1, 2, 3} // define array
     fmt.Println(arr[0])    // access element
   description: Go arrays basics
 
 - name: map
+  alias: [mp,m,map]
   syntax: |
     m := map[string]int{"a": 1, "b": 2}
     fmt.Println(m["a"]) // access map
   description: Go maps basics
 
 - name: slice
+  alias: [slc,s,slice]
   syntax: |
     s := []int{1, 2, 3} // slice declaration
     s = append(s, 4)    // append element
   description: Go slices basics
 
 - name: function
+  alias: [fn,func,f]
   syntax: |
     func add(a int, b int) int {
         return a + b
@@ -29,9 +33,113 @@
   description: Go functions
 
 - name: struct
+  alias: [st,struct,str]
   syntax: |
     type Person struct {
         Name string
         Age  int
     }
-  description: Struct declaration in Go
+    func (p Person) Greet() string {
+        return "Hello, " + p.Name
+    }
+    p := Person{"Thinesh", 30}
+    fmt.Println(p.Greet())
+  description: Struct declaration with method
+
+- name: pointer
+  alias: [ptr,pointer]
+  syntax: |
+    var a int = 42
+    var p *int = &a    // pointer to a
+    fmt.Println(*p)    // dereference pointer
+  description: Pointers basics
+
+- name: interface
+  alias: [iface,intf]
+  syntax: |
+    type Greeter interface {
+        Greet() string
+    }
+    func sayHello(g Greeter) {
+        fmt.Println(g.Greet())
+    }
+  description: Interface basics
+
+- name: goroutine
+  alias: [go,gr,groutine]
+  syntax: |
+    go func() {
+        fmt.Println("Running in goroutine")
+    }()
+  description: Launch goroutine (concurrent func)
+
+- name: condition
+  alias: [cond,ifelse]
+  syntax: |
+    if x > 10 {
+        fmt.Println("Big number")
+    } else {
+        fmt.Println("Small number")
+    }
+  description: If-else condition
+
+- name: make_command
+  alias: [make,init]
+  syntax: |
+    s := make([]int, 0, 5)         // make slice
+    m := make(map[string]int)      // make map
+    c := make(chan int)            // make channel
+  description: make usage for slices, maps, channels
+
+- name: go_build
+  alias: [build]
+  syntax: |
+    GOOS=linux GOARCH=amd64 go build -o app-linux
+    GOOS=windows GOARCH=amd64 go build -o app.exe
+  description: Cross-compiling Go binaries
+
+- name: string_conversion
+  alias: [strconv]
+  syntax: |
+    str := "hello"
+    b := []byte(str)             // string to bytes
+    r := []rune(str)             // string to runes
+    str2 := string(b)            // bytes to string
+    str3 := string(r)            // runes to string
+  description: String, byte, rune conversions
+
+- name: runes
+  alias: [rn]
+  syntax: |
+    r := []rune("世界")
+    fmt.Println(len(r))          // count runes, not bytes
+  description: Rune basics (Unicode code points)
+
+- name: byte
+  alias: [bt]
+  syntax: |
+    b := []byte{0x48, 0x65, 0x6c, 0x6c, 0x6f}
+    fmt.Println(string(b))       // convert bytes to string
+  description: Byte slice basics
+
+- name: files
+  alias: [file,io]
+  syntax: |
+    f, err := os.Open("file.txt")
+    if err != nil { log.Fatal(err) }
+    defer f.Close()
+    buf := make([]byte, 100)
+    n, err := f.Read(buf)
+    fmt.Println(string(buf[:n]))
+  description: File open, read, close basics
+
+- name: network
+  alias: [net,socket]
+  syntax: |
+    ln, _ := net.Listen("tcp", ":8080")
+    conn, _ := ln.Accept()
+    buf := make([]byte, 512)
+    n, _ := conn.Read(buf)
+    fmt.Println(string(buf[:n]))
+    conn.Write([]byte("pong"))
+  description: Basic TCP server accept and respond
