@@ -107,6 +107,9 @@
     chmod +x file         # make file executable
     chown user:group file # change owner
     ls -l                 # show file perms
+    chmod u+s bin         # SUID: run as file owner (e.g. root)
+    chmod g+s dir         # SGID: files in dir inherit group
+    chmod +t /tmp         # Sticky: only owner can delete files
   description: File permissions and ownership
 
 - name: logs
@@ -215,47 +218,3 @@
     deluser user            # remove user
     delgroup group          # remove group
 
-
-- name: /dev
-  alias: [devices, dev]
-  purpose: |
-    Devices - block, tty, etc.
-  tips: |
-    /dev/sda       # first disk
-    /dev/null      # bitbucket
-    /dev/tty       # terminal
-    
-- name: kernel_and_hardware
-  alias: [kernel, hardware, cpu]
-  syntax: |
-    uname -r              # kernel version
-    uname -a              # kernel + arch + hostname
-    hostnamectl           # OS and kernel info
-    lscpu                 # CPU info
-    lsblk                 # block devices (disk)
-    lspci                 # PCI devices (GPU/NIC)
-    lsusb                 # USB devices
-    free -h               # RAM usage
-    dmidecode             # BIOS, serial, board info
-    cat /proc/cpuinfo     # raw CPU info
-    cat /proc/meminfo     # raw RAM info
-    cat /proc/version     # kernel version string
-
-- name: users_groups
-  alias: [users, groups, accounts]
-  syntax: |
-    whoami                  # current user
-    id                      # UID, GID, groups
-    groups                  # current user's groups
-    getent passwd user      # user info
-    getent group group      # group info
-
-    adduser newuser         # create new user (Debian)
-    useradd -m newuser      # create user + home dir
-    passwd newuser          # set password
-
-    usermod -aG sudo user   # add user to sudo
-    groupadd devs           # create group
-    gpasswd -a user devs    # add user to group
-    deluser user            # remove user
-    delgroup group          # remove group
