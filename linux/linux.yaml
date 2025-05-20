@@ -1,0 +1,20 @@
+- name: all
+  syntax: compiled
+  description: Aggregated Linux commands
+
+- name: ls
+  syntax: |
+    ls -la            # list all files with details
+  description: List files
+
+- name: system
+  syntax: |
+    uname -a          # system info
+    uptime            # system uptime
+  description: System commands
+
+- name: disk
+  syntax: |
+    df -h             # disk usage human-readable
+    du -sh /path      # directory size
+  description: Disk usage commands
