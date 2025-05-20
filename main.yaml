@@ -47,3 +47,14 @@ languages:
     alias:
       - git
       - g
+      
+  - name: opensource
+    title: "Open Source Workflow Cheatsheet"
+    version: "1.0.0"
+    description: "Best practices for GitHub issues, commits, licenses, and releases."
+    database: "opensource/opensource.yaml"
+    alias:
+      - oss
+      - open-source
+      - open
+      - practices
