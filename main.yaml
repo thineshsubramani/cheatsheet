@@ -18,6 +18,14 @@ languages:
       - py
       - python
 
+  - name: c
+    title: "C Language Cheatsheet"
+    version: "11.3.0"
+    description: "From basic syntax to hardcore systems programming in C."
+    database: "c/c.yaml"
+    alias:
+      - c
+
   - name: linux
     title: "Linux CLI Cheatsheet"
     version: "6.14.7"
