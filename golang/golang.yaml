@@ -181,6 +181,61 @@
     af.WriteString("\nworld")                        // append string to end of file
   description: File open, read, close basics
 
+- name: linkedlist
+  alias: [list, node]
+  syntax: |
+    type Node struct {
+        val  int        // value of node
+        next *Node      // pointer to next node
+    }
+    head := &Node{val: 1, next: &Node{val: 2}}             // create list
+    for node := head; node != nil; node = node.next {      // loop through list
+        fmt.Println(node.val)                              // print node value
+    }
+  description: Singly linked list using struct with simple traversal
+
+- name: stack
+  alias: [lifo]
+  syntax: |
+    type Stack struct {
+        data []int      // underlying slice
+    }
+    func (s *Stack) Push(x int)  { s.data = append(s.data, x) }       // push
+    func (s *Stack) Pop() int {
+        x := s.data[len(s.data)-1]       // get top
+        s.data = s.data[:len(s.data)-1]  // remove top
+        return x
+    }
+    func (s *Stack) IsEmpty() bool { return len(s.data) == 0 }        // check empty
+
+    s := &Stack{}                   // init
+    s.Push(1); s.Push(2); s.Push(3) // push values
+    for !s.IsEmpty() {
+        fmt.Println(s.Pop())        // pop and print
+    }
+  description: Struct-based LIFO stack with push/pop and loop
+
+- name: queue
+  alias: [fifo]
+  syntax: |
+    type Queue struct {
+        data []int      // underlying slice
+    }
+    func (q *Queue) Enqueue(x int) { q.data = append(q.data, x) }     // add to back
+    func (q *Queue) Dequeue() int {
+        x := q.data[0]             // get front
+        q.data = q.data[1:]        // remove front
+        return x
+    }
+    func (q *Queue) IsEmpty() bool { return len(q.data) == 0 }        // check empty
+
+    q := &Queue{}                   // init
+    q.Enqueue(1); q.Enqueue(2); q.Enqueue(3) // enqueue values
+    for !q.IsEmpty() {
+        fmt.Println(q.Dequeue())   // dequeue and print
+    }
+  description: Struct-based FIFO queue with enqueue/dequeue and loop
+
 - name: network
   alias: [net,socket]
   syntax: |
