@@ -1,0 +1,125 @@
+- name: git-clone
+  alias: [gclone,clone]
+  syntax: |
+    git clone https://github.com/user/repo.git       # clone repo
+    git clone -b branchname repo.git                 # clone specific branch
+  description: Clone repo from remote
+
+- name: git-branch
+  alias: [gbranch,branch]
+  syntax: |
+    git branch                                       # list branches
+    git branch new-feature                           # create new branch
+    git switch new-feature                           # switch branch
+    git switch -c new-feature                        # create & switch
+    git branch -d branchname                         # delete branch (safe)
+  description: Manage local branches
+
+- name: git-commit
+  alias: [gcommit,c,commit]
+  syntax: |
+    git add .                                        # stage changes
+    git commit -m "msg"                              # commit staged
+    git commit -am "msg"                             # add + commit tracked
+    git commit --amend                               # edit last commit
+  description: Stage and commit changes
+
+- name: git-merge-rebase
+  alias: [gmerge, grebase,rebase, merge]
+  syntax: |
+    git merge feature                                # merge feature → current
+    git rebase main                                  # rebase on main
+    git rebase -i HEAD~3                             # interactive rebase
+    git pull --rebase                                # rebase pull
+  description: Merge or rebase branches
+
+- name: git-push-pull
+  alias: [gpush, gpull,push,pull]
+  syntax: |
+    git push origin branch                           # push branch
+    git push -u origin branch                        # set upstream
+    git pull                                         # pull latest
+    git fetch                                        # fetch only
+  description: Sync with remote
+
+- name: git-stash
+  alias: [gstash,stash]
+  syntax: |
+    git stash                                        # save uncommitted
+    git stash list                                   # view stashes
+    git stash apply stash@{0}                        # apply stash
+    git stash pop                                    # apply + drop
+  description: Temp save dirty work
+
+- name: git-reset
+  alias: [greset,reset]
+  syntax: |
+    git reset --soft HEAD~1                          # uncommit, keep staged
+    git reset --mixed HEAD~1                         # uncommit, unstaged
+    git reset --hard HEAD~1                          # undo commit + changes
+  description: Undo commits or changes
+
+- name: git-log
+  alias: [glog,log]
+  syntax: |
+    git log --oneline                                # short history
+    git log --graph --decorate                       # visual tree
+    git log -p -2                                    # show last 2 diffs
+  description: View commit history
+
+- name: git-reflog
+  alias: [greflog,reflog]
+  syntax: |
+    git reflog                                       # show branch moves
+    git reset --hard HEAD@{3}                        # restore from reflog
+  description: Recover lost commits
+
+- name: git-cherry-pick
+  alias: [gcherry,cherry,cherrypick,cherry-pick]
+  syntax: |
+    git cherry-pick <commit-hash>                    # apply commit
+    git cherry-pick A^..B                            # apply commit range
+  description: Copy specific commits to current branch
+
+- name: git-patch
+  alias: [gpatch,patch,p]
+  syntax: |
+    git diff > fix.patch                             # export patch
+    git apply fix.patch                              # apply patch
+  description: Patch-based diff and apply
+
+- name: git-diff
+  alias: [gdiff,diff]
+  syntax: |
+    git diff                                         # unstaged changes
+    git diff --cached                                # staged only
+    git diff HEAD                                    # vs last commit
+  description: Show code changes
+
+- name: git-tag
+  alias: [gtag,tag]
+  syntax: |
+    git tag v1.0.0                                   # create tag
+    git tag -d v1.0.0                                # delete tag
+    git push origin v1.0.0                           # push tag
+  description: Create and manage tags
+
+- name: git-config
+  alias: [gcfg,cfg,config]
+  syntax: |
+    git config --global user.name "Thinesh"          # set global name
+    git config --list                                # view config
+  description: Manage Git config
+
+- name: git-clean
+  alias: [gclean,clean,cln]
+  syntax: |
+    git clean -n                                     # preview untracked remove
+    git clean -f                                     # delete untracked
+  description: Clean untracked files
+
+- name: git-blame
+  alias: [gblame,blame]
+  syntax: |
+    git blame file.go                                # who wrote each line
+  description: Track line authorship
