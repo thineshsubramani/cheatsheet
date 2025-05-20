@@ -1,20 +1,218 @@
 - name: all
+  alias: [all, linux, cmds]
   syntax: compiled
-  description: Aggregated Linux commands
+  description: Aggregated Linux commands for DevOps/SRE
 
 - name: ls
+  alias: [list, files, dir]
   syntax: |
-    ls -la            # list all files with details
-  description: List files
+    ls -la            # list all with hidden & details
+    tree              # show folder structure
+  description: List files and folders
 
 - name: system
+  alias: [sys, info, status]
   syntax: |
-    uname -a          # system info
-    uptime            # system uptime
-  description: System commands
+    uname -a          # kernel + arch + OS
+    uptime            # how long system is up
+    hostname -I       # get local IP
+    top               # live process view
+    htop              # better top (needs install)
+    free -h           # RAM usage human-readable
+    vmstat 1          # CPU/mem/swap live stats
+  description: System info and status
 
 - name: disk
+  alias: [disk, storage, mount]
   syntax: |
-    df -h             # disk usage human-readable
-    du -sh /path      # directory size
-  description: Disk usage commands
+    df -h             # disk usage per mount
+    du -sh *          # folder sizes in current dir
+    lsblk             # block devices info
+    mount             # show mounted filesystems
+    findmnt           # tree of mount points
+  description: Disk, mounts, and usage
+
+- name: network
+  alias: [net, netstat, ip]
+  syntax: |
+    ip a              # show IPs
+    ss -tuln          # show open ports
+    netstat -tulnp    # legacy, same as ss (needs net-tools)
+    ping 8.8.8.8      # basic connectivity check
+    dig google.com    # DNS resolution
+    traceroute 8.8.8.8 # trace route to host
+    curl -I URL       # check HTTP headers
+  description: Network debug & connectivity
+
+- name: files
+  alias: [file, cat, grep]
+  syntax: |
+    cat file          # view file content
+    tail -f file      # live log tail
+    head -n 20 file   # first 20 lines
+    less file         # scrollable view
+    grep "text" file  # search in file
+    awk '{print $1}'  # column print
+    sed 's/old/new/g' # replace text inline
+  description: File reading, parsing
+
+- name: package
+  alias: [pkg, apt, yum]
+  syntax: |
+    apt update && apt upgrade   # Debian/Ubuntu update
+    yum update                  # RHEL/CentOS update
+    dpkg -l | grep package      # check if package is installed
+  description: Package manager commands
+
+- name: services
+  alias: [svc, svcs, service]
+  syntax: |
+    systemctl status nginx      # check service status
+    systemctl restart nginx     # restart service
+    journalctl -u nginx         # view service logs
+    systemctl enable nginx      # auto-start on boot
+  description: Systemd service management
+
+- name: users
+  alias: [user, uid, groups]
+  syntax: |
+    whoami              # current user
+    id                  # user UID/GID
+    groups              # list user groups
+    sudo su - user      # switch user
+    useradd -m user     # create user with home dir
+    passwd user         # set/change password
+  description: User and permission basics
+
+- name: processes
+  alias: [proc, ps, kill]
+  syntax: |
+    ps aux              # show all processes
+    kill -9 PID         # force kill process
+    pkill -f name       # kill by process name
+  description: Process inspection and kill
+
+- name: archive
+  alias: [tar, zip, compress]
+  syntax: |
+    tar -czf file.tar.gz dir   # compress dir
+    tar -xzf file.tar.gz       # extract archive
+    zip -r file.zip dir        # zip a folder
+    unzip file.zip             # unzip file
+  description: Compress and extract files
+
+- name: perms
+  alias: [chmod, chown, permissions]
+  syntax: |
+    chmod +x file         # make file executable
+    chown user:group file # change owner
+    ls -l                 # show file perms
+  description: File permissions and ownership
+
+- name: logs
+  alias: [log, syslog, journal]
+  syntax: |
+    tail -n 100 /var/log/syslog     # view last 100 lines
+    journalctl -xe                  # system logs with errors
+    dmesg | less                    # kernel logs
+  description: System and service logs
+
+- name: ssh
+  alias: [ssh, scp, rsync]
+  syntax: |
+    ssh user@host              # connect to remote
+    scp file user@host:/path   # copy file to remote
+    rsync -avz src/ user@host:/dst # sync with compression
+  description: Remote login and file transfer
+
+- name: docker
+  alias: [docker, container, images]
+  syntax: |
+    docker ps -a               # all containers
+    docker images              # list images
+    docker exec -it id bash    # shell into container
+    docker logs -f id          # follow container logs
+  description: Common Docker commands
+
+- name: /proc
+  alias: [procfs, proc]
+  purpose: |
+    Virtual filesystem for kernel & process info
+  tips: |
+    /proc/cpuinfo         # CPU details
+    /proc/meminfo         # Memory info
+    /proc/uptime          # System uptime
+    /proc/[PID]/status    # Specific process info
+
+- name: /sys
+  alias: [sysfs, sys]
+  purpose: |
+    Kernel & device info (USBs, block devs, power)
+  tips: |
+    /sys/class/net/eth0/operstate   # NIC up/down?
+    /sys/block/sda/size             # Disk size
+
+- name: /etc
+  alias: [config, etc]
+  purpose: |
+    Config files for everything
+  tips: |
+    /etc/passwd      # users list
+    /etc/group       # groups list
+    /etc/hosts       # static DNS
+    /etc/network/    # network config (older distros)
+    /etc/systemd/    # systemd services
+
+- name: /var/log
+  alias: [logs, varlog]
+  purpose: |
+    Log files
+  tips: |
+    /var/log/syslog         # system messages
+    /var/log/auth.log       # login/auth attempts
+    /var/log/kern.log       # kernel logs
+    /var/log/dmesg          # boot-time logs
+
+- name: /dev
+  alias: [devices, dev]
+  purpose: |
+    Devices - block, tty, etc.
+  tips: |
+    /dev/sda       # first disk
+    /dev/null      # bitbucket
+    /dev/tty       # terminal
+    
+- name: kernel_and_hardware
+  alias: [kernel, hardware, cpu]
+  syntax: |
+    uname -r              # kernel version
+    uname -a              # kernel + arch + hostname
+    hostnamectl           # OS and kernel info
+    lscpu                 # CPU info
+    lsblk                 # block devices (disk)
+    lspci                 # PCI devices (GPU/NIC)
+    lsusb                 # USB devices
+    free -h               # RAM usage
+    dmidecode             # BIOS, serial, board info
+    cat /proc/cpuinfo     # raw CPU info
+    cat /proc/meminfo     # raw RAM info
+    cat /proc/version     # kernel version string
+
+- name: users_groups
+  alias: [users, groups, accounts]
+  syntax: |
+    whoami                  # current user
+    id                      # UID, GID, groups
+    groups                  # current user's groups
+    getent passwd user      # user info
+    getent group group      # group info
+
+    adduser newuser         # create new user (Debian)
+    useradd -m newuser      # create user + home dir
+    passwd newuser          # set password
+
+    usermod -aG sudo user   # add user to sudo
+    groupadd devs           # create group
+    gpasswd -a user devs    # add user to group
+    deluser user            # remove user
+    delgroup group          # remove group
