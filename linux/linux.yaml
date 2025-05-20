@@ -134,44 +134,87 @@
     docker logs -f id          # follow container logs
   description: Common Docker commands
 
-- name: /proc
+- name: docker
+  alias: [docker, container, images]
+  syntax: |
+    docker ps -a               # all containers
+    docker images              # list images
+    docker exec -it id bash    # shell into container
+    docker logs -f id          # follow container logs
+
+- name: procfs
   alias: [procfs, proc]
-  purpose: |
-    Virtual filesystem for kernel & process info
-  tips: |
-    /proc/cpuinfo         # CPU details
-    /proc/meminfo         # Memory info
-    /proc/uptime          # System uptime
-    /proc/[PID]/status    # Specific process info
+  syntax: |
+    cat /proc/cpuinfo         # CPU details
+    cat /proc/meminfo         # Memory info
+    cat /proc/uptime          # System uptime
+    cat /proc/$$/status       # Specific process info
 
-- name: /sys
+- name: sysfs
   alias: [sysfs, sys]
-  purpose: |
-    Kernel & device info (USBs, block devs, power)
-  tips: |
-    /sys/class/net/eth0/operstate   # NIC up/down?
-    /sys/block/sda/size             # Disk size
+  syntax: |
+    cat /sys/class/net/eth0/operstate   # NIC up/down?
+    cat /sys/block/sda/size             # Disk size
 
-- name: /etc
+- name: etc
   alias: [config, etc]
-  purpose: |
-    Config files for everything
-  tips: |
-    /etc/passwd      # users list
-    /etc/group       # groups list
-    /etc/hosts       # static DNS
-    /etc/network/    # network config (older distros)
-    /etc/systemd/    # systemd services
+  syntax: |
+    cat /etc/passwd         # users list
+    cat /etc/group          # groups list
+    cat /etc/hosts          # static DNS
+    ls /etc/network/        # network config (older distros)
+    ls /etc/systemd/        # systemd services
 
-- name: /var/log
+- name: var_log
   alias: [logs, varlog]
-  purpose: |
-    Log files
-  tips: |
-    /var/log/syslog         # system messages
-    /var/log/auth.log       # login/auth attempts
-    /var/log/kern.log       # kernel logs
-    /var/log/dmesg          # boot-time logs
+  syntax: |
+    tail /var/log/syslog         # system messages
+    tail /var/log/auth.log       # login/auth attempts
+    tail /var/log/kern.log       # kernel logs
+    dmesg                        # boot-time logs
+
+- name: dev
+  alias: [devices, dev]
+  syntax: |
+    ls -l /dev/sda       # first disk
+    ls -l /dev/null      # bitbucket
+    ls -l /dev/tty       # terminal
+
+- name: kernel_and_hardware
+  alias: [kernel, hardware, cpu]
+  syntax: |
+    uname -r              # kernel version
+    uname -a              # kernel + arch + hostname
+    hostnamectl           # OS and kernel info
+    lscpu                 # CPU info
+    lsblk                 # block devices (disk)
+    lspci                 # PCI devices (GPU/NIC)
+    lsusb                 # USB devices
+    free -h               # RAM usage
+    dmidecode             # BIOS, serial, board info
+    cat /proc/cpuinfo     # raw CPU info
+    cat /proc/meminfo     # raw RAM info
+    cat /proc/version     # kernel version string
+
+- name: users_groups
+  alias: [users, groups, accounts]
+  syntax: |
+    whoami                  # current user
+    id                      # UID, GID, groups
+    groups                  # current user's groups
+    getent passwd user      # user info
+    getent group group      # group info
+
+    adduser newuser         # create new user (Debian)
+    useradd -m newuser      # create user + home dir
+    passwd newuser          # set password
+
+    usermod -aG sudo user   # add user to sudo
+    groupadd devs           # create group
+    gpasswd -a user devs    # add user to group
+    deluser user            # remove user
+    delgroup group          # remove group
+
 
 - name: /dev
   alias: [devices, dev]
