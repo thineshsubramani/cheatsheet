@@ -1,53 +1,54 @@
 - name: all
-  alias: [full, allinone]
+  alias: [full]
   syntax: compiled
   description: Aggregated GoLang syntax sections
 
 - name: array
-  alias: [arr,a,array]
+  alias: [arr,a,arrays]
   syntax: |
     arr := [3]int{1, 2, 3} // define array
     fmt.Println(arr[0])    // access element
   description: Go arrays basics
 
 - name: map
-  alias: [mp,m,map]
+  alias: [mp,m,maps,hashmap]
   syntax: |
     m := map[string]int{"a": 1, "b": 2}
     fmt.Println(m["a"]) // access map
   description: Go maps basics
 
 - name: slice
-  alias: [slc,s,slice]
+  alias: [slc,s,slices]
   syntax: |
     s := []int{1, 2, 3} // slice declaration
     s = append(s, 4)    // append element
   description: Go slices basics
 
 - name: function
-  alias: [fn,func,f]
+  alias: [fn,func,f,functions]
   syntax: |
     func add(a int, b int) int {
         return a + b
     }
+    func sub(a int, b int)(int,float){}
   description: Go functions
 
 - name: struct
-  alias: [st,struct,str]
+  alias: [structs]
   syntax: |
     type Person struct {
         Name string
         Age  int
-    }
+    }  // Declaring Struct
     func (p Person) Greet() string {
         return "Hello, " + p.Name
     }
-    p := Person{"Thinesh", 30}
+    p := Person{"Thinesh", 30} // initilize struct 
     fmt.Println(p.Greet())
   description: Struct declaration with method
 
 - name: pointer
-  alias: [ptr,pointer]
+  alias: [p,ptr,pointers]
   syntax: |
     var a int = 42
     var p *int = &a    // pointer to a
@@ -55,7 +56,7 @@
   description: Pointers basics
 
 - name: interface
-  alias: [iface,intf]
+  alias: [i,iface,intf,interfaces]
   syntax: |
     type Greeter interface {
         Greet() string
@@ -66,25 +67,22 @@
   description: Interface basics
 
 - name: goroutine
-  alias: [go,gr,groutine]
+  alias: [go,gr,groutine,rountine]
   syntax: |
     go func() {
-        fmt.Println("Running in goroutine")
+        fmt.Println("Running")
     }()
   description: Launch goroutine (concurrent func)
 
 - name: condition
   alias: [cond,ifelse]
   syntax: |
-    if x > 10 {
-        fmt.Println("Big number")
-    } else {
-        fmt.Println("Small number")
-    }
+    if x > 10 {fmt.Println("Big number")
+    } else {  fmt.Println("Small number")}
   description: If-else condition
 
 - name: make_command
-  alias: [make,init]
+  alias: [make, makes]
   syntax: |
     s := make([]int, 0, 5)         // make slice
     m := make(map[string]int)      // make map
@@ -92,31 +90,64 @@
   description: make usage for slices, maps, channels
 
 - name: go_build
-  alias: [build]
+  alias: [build,builds]
   syntax: |
+    go mod init && go mod tidy // initilize and pull dependecies
     GOOS=linux GOARCH=amd64 go build -o app-linux
     GOOS=windows GOARCH=amd64 go build -o app.exe
   description: Cross-compiling Go binaries
 
-- name: string_conversion
-  alias: [strconv]
+- name: string
+  alias: [str,s]
   syntax: |
     str := "hello"
+    str := `Multiline string`
     b := []byte(str)             // string to bytes
     r := []rune(str)             // string to runes
     str2 := string(b)            // bytes to string
     str3 := string(r)            // runes to string
   description: String, byte, rune conversions
+  
+- name: fmt
+  alias: [print,format,strformat,stdout]
+  syntax: |
+    fmt.Print("hello")                      // basic print
+    fmt.Println("hello", "world")          // print with newline
+    fmt.Printf("Hello %s\n", "Thinesh")    // formatted print
+
+    // Types
+    fmt.Printf("int: %d\n", 42)
+    fmt.Printf("float: %.2f\n", 3.14159)    // 2 decimal places
+    fmt.Printf("hex: %x\n", 255)            // hex output
+    fmt.Printf("char: %c\n", 65)            // ASCII to char
+    fmt.Printf("string: %s\n", "go")
+    fmt.Printf("rune: %q\n", '🧠')          // rune quote
+    fmt.Printf("byte: %v\n", []byte("go"))  // byte slice
+
+    // Debugging
+    fmt.Printf("struct: %+v\n", p)          // print field names
+    fmt.Printf("type: %T\n", p)             // print type
+
+    // String formatting
+    s := fmt.Sprintf("Pi is %.3f", 3.14159) // formatted string return
+
+    // Align + pad
+    fmt.Printf("%6s\n", "Go")     // pad left
+    fmt.Printf("%-6s\n", "Go")    // pad right
+
+    // Number cut decimal
+    fmt.Printf("%.0f\n", 9.99)    // print 10, round float
+  description: Printing, formatting bytes, runes, strings, decimals using fmt package
 
 - name: runes
-  alias: [rn]
+  alias: [rn, rune]
   syntax: |
     r := []rune("世界")
     fmt.Println(len(r))          // count runes, not bytes
   description: Rune basics (Unicode code points)
 
 - name: byte
-  alias: [bt]
+  alias: [bt, bytes]
   syntax: |
     b := []byte{0x48, 0x65, 0x6c, 0x6c, 0x6f}
     fmt.Println(string(b))       // convert bytes to string
@@ -127,7 +158,7 @@
   syntax: |
     f, err := os.Open("file.txt")
     if err != nil { log.Fatal(err) }
-    defer f.Close()
+    defer f.Close() // execute at end of function
     buf := make([]byte, 100)
     n, err := f.Read(buf)
     fmt.Println(string(buf[:n]))
@@ -143,3 +174,39 @@
     fmt.Println(string(buf[:n]))
     conn.Write([]byte("pong"))
   description: Basic TCP server accept and respond
+  
+- name: go_command
+  alias: [gocmd, cmd, gocommands, gocommand]
+  syntax: |
+    go help                 // general help
+    go help <command>      // help for specific command (e.g., go help build)
+
+    go doc fmt             // show docs for std lib 'fmt'
+    go doc fmt.Println     // show doc for specific function
+
+    go list std            // list all standard packages
+
+    go env                 // show Go environment setup
+    go version             // current Go version
+    go mod tidy            // clean up go.mod/go.sum
+  description: Go CLI commands for docs, std lib, version, and env info
+
+- name: go_lib
+  alias: [std,gostd,golib]
+  syntax: |
+    "fmt"        // print to stdout/stderr
+    "os"         // file ops, env vars, args
+    "io/ioutil"  // quick file read/write (deprecated, use os + io)
+    "bufio"      // buffered I/O for performance
+    "net/http"   // HTTP client & server
+    "net"        // TCP, UDP sockets
+    "time"       // timers, sleeping, formatting time
+    "strings"    // string ops (split, join, trim, etc.)
+    "strconv"    // convert string <-> int, float, bool
+    "encoding/json" // marshal/unmarshal JSON
+    "context"    // cancelable request flows
+    "sync"       // mutex, waitgroup
+    "errors"     // wrap and create errors
+    "log"        // simple structured logging
+    "flag"       // CLI arg parser
+  description: Most-used Go standard libraries for system, net, I/O, and backend work
