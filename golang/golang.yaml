@@ -1,0 +1,36 @@
+- name: all
+  syntax: compiled
+  description: Aggregated GoLang syntax sections
+
+- name: array
+  syntax: |
+    arr := [3]int{1, 2, 3} // define array
+    fmt.Println(arr[0])    // access element
+  description: Go arrays basics
+
+- name: map
+  syntax: |
+    m := map[string]int{"a": 1, "b": 2}
+    fmt.Println(m["a"]) // access map
+  description: Go maps basics
+
+- name: slice
+  syntax: |
+    s := []int{1, 2, 3} // slice declaration
+    s = append(s, 4)    // append element
+  description: Go slices basics
+
+- name: function
+  syntax: |
+    func add(a int, b int) int {
+        return a + b
+    }
+  description: Go functions
+
+- name: struct
+  syntax: |
+    type Person struct {
+        Name string
+        Age  int
+    }
+  description: Struct declaration in Go
