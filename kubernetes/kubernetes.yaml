@@ -1,0 +1,82 @@
+- name: kubernetes
+  alias: [kget, kgetall, kubectl, kube, kubernetes, k]
+  syntax: |
+    kubectl get pods                 # list pods in current ns
+    kubectl get svc                  # list services
+    kubectl get nodes               # list nodes
+    kubectl get all --all-namespaces # get everything
+  description: Basic kubectl get commands to explore Kubernetes objects
+
+- name: kubectl-apply
+  alias: [kapply]
+  syntax: |
+    kubectl apply -f pod.yaml       # apply config file
+    kubectl apply -k ./myfolder     # apply kustomize folder
+  description: Apply manifests to cluster
+
+- name: kubectl-delete
+  alias: [kdel]
+  syntax: |
+    kubectl delete pod mypod        # delete single pod
+    kubectl delete -f deployment.yaml # delete from manifest
+  description: Delete K8s resources
+
+- name: kubectl-describe
+  alias: [kdesc]
+  syntax: |
+    kubectl describe pod mypod      # details of pod
+    kubectl describe node mynode    # node info
+  description: Show detailed state of resources
+
+- name: kubectl-logs
+  alias: [klogs]
+  syntax: |
+    kubectl logs mypod              # logs from pod
+    kubectl logs mypod -c mycontainer # logs from specific container
+  description: View logs from pods/containers
+
+- name: kubectl-exec
+  alias: [kexec]
+  syntax: |
+    kubectl exec -it mypod -- /bin/bash  # exec into pod
+    kubectl exec mypod -- ls /           # run command in pod
+  description: Execute command inside running pod
+
+- name: kubectl-port-forward
+  alias: [kpf]
+  syntax: |
+    kubectl port-forward svc/myservice 8080:80   # svc forward
+    kubectl port-forward pod/mypod 8080:80       # pod forward
+  description: Forward local port to pod/service
+
+- name: kubectl-cp
+  alias: [kcp]
+  syntax: |
+    kubectl cp mypod:/path/in/pod /local/path    # copy from pod
+    kubectl cp /local/path mypod:/path/in/pod    # copy to pod
+  description: Copy files to/from containers
+
+- name: kubeadm-init
+  alias: [kinit]
+  syntax: |
+    kubeadm init --pod-network-cidr=10.244.0.0/16  # init master node
+  description: Initialize master node
+
+- name: kubeadm-join
+  alias: [kjoin]
+  syntax: |
+    kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+  description: Join worker node to the cluster
+
+- name: kubeadm-reset
+  alias: [kreset]
+  syntax: |
+    kubeadm reset --force             # reset cluster config
+  description: Reset kubeadm cluster setup
+
+- name: kubectl-ns
+  alias: [kns]
+  syntax: |
+    kubectl get ns                    # list namespaces
+    kubectl config set-context --current --namespace=my-namespace  # switch ns
+  description: Namespace management
