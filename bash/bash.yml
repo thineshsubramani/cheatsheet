@@ -1,0 +1,305 @@
+- name: shebang
+  alias: [start, base]
+  syntax: |
+    #!/bin/bash              # use bash shell
+    #!/bin/sh                # POSIX-compliant shell
+  description: Script interpreter declaration
+
+- name: variables
+  alias: [vars, env]
+  syntax: |
+    name="Thinesh"           # set variable
+    echo $name               # use variable
+  description: Set and use variables
+
+- name: read-input
+  alias: [input]
+  syntax: |
+    read -p "Enter name: " name
+    echo "Hello $name"
+  description: Read user input
+
+- name: conditionals
+  alias: [if, ifelse, cond, condition]
+  syntax: |
+    if [[ $x -gt 5 ]]; then
+      echo "x > 5"
+    elif [[ $x -eq 5 ]]; then
+      echo "x == 5"
+    else
+      echo "x < 5"
+    fi
+  description: Conditional logic in Bash
+
+- name: loops
+  alias: [loop, iter, for, while]
+  syntax: |
+    for i in {1..5}; do echo $i; done   # simple for loop
+    while [[ $i -lt 5 ]]; do ((i++)); done  # while loop
+    until [[ $done == "yes" ]]; do break; done # until loop
+  description: Looping constructs
+
+- name: functions
+  alias: [func, def, function]
+  syntax: |
+    greet() {
+      echo "Hello $1"
+    }
+    greet "DevOps"
+  description: Function definition and invocation
+
+- name: arithmetic
+  alias: [math, calc]
+  syntax: |
+    x=$((5 + 3))             # basic arithmetic
+    let x=5+3                # alt method
+    expr 5 + 3               # external tool
+  description: Integer math ops
+
+- name: string-ops
+  alias: [str, string, s]
+  syntax: |
+    str="hello"
+    echo ${#str}             # string length
+    echo ${str:1:3}          # substring
+    echo ${str/ll/zz}        # replace
+  description: String manipulation
+
+- name: arrays
+  alias: [arr, list, a]
+  syntax: |
+    arr=(a b c)
+    echo ${arr[1]}           # index access
+    echo ${#arr[@]}          # array length
+    for i in "${arr[@]}"; do echo $i; done
+  description: Indexed array handling
+
+- name: associative-arrays
+  alias: [dict, hashmap, map]
+  syntax: |
+    declare -A kv
+    kv["env"]="prod"
+    echo ${kv["env"]}
+  description: Key-value associative arrays
+
+- name: case-switch
+  alias: [case, switch, switch-case]
+  syntax: |
+    case $val in
+      1) echo "one" ;;
+      2) echo "two" ;;
+      *) echo "other" ;;
+    esac
+  description: Switch-case logic
+
+- name: file-check
+  alias: [filetest]
+  syntax: |
+    if [[ -f file.txt ]]; then
+      echo "file exists"
+    fi
+  description: File existence check
+
+- name: exec-subshell
+  alias: [subshell, exec]
+  syntax: |
+    (cd /tmp && ls)          # subshell command
+    output=$(ls -l)          # command substitution
+  description: Subshell and command substitution
+
+- name: redirection
+  alias: [redir]
+  syntax: |
+    command > out.txt        # stdout to file
+    command >> out.txt       # append
+    command 2> err.txt       # stderr
+    command &> all.txt       # both stdout + stderr
+  description: Output redirection
+
+- name: trap
+  alias: [signal, sig]
+  syntax: |
+    trap "echo Interrupted" SIGINT
+    trap "cleanup" EXIT
+  description: Catch signals and cleanup
+
+- name: exit-status
+  alias: [ret, status]
+  syntax: |
+    command
+    echo $?                  # get exit code
+  description: Last command's exit code
+
+- name: test-conditions
+  alias: [test]
+  syntax: |
+    [[ -z "$var" ]]          # empty check
+    [[ -n "$var" ]]          # non-empty
+    [[ "$a" == "$b" ]]       # string compare
+  description: Test expressions
+
+- name: cli-args
+  alias: [args, param]
+  syntax: |
+    echo $0                 # script name
+    echo $1                 # first arg
+    echo $#                 # number of args
+    for arg in "$@"; do echo $arg; done
+  description: Access script arguments
+
+- name: sourcing
+  alias: [source]
+  syntax: |
+    source ./config.sh      # include another script
+    . ./env.sh              # dot sourcing
+  description: Import another script into current shell
+
+- name: debug
+  alias: [trace, xtrace]
+  syntax: |
+    set -x                  # enable debug (trace)
+    set +x                  # disable
+    bash -x script.sh       # run script with debug
+  description: Trace and debug Bash scripts
+- name: error-handling
+  alias: [fail, traperr]
+  syntax: |
+    set -euo pipefail         # strict mode: exit on error, unset vars, pipefail
+    trap 'echo "Error at line $LINENO"; exit 1' ERR
+  description: Safe and reliable error handling
+
+- name: log-function
+  alias: [log, logger]
+  syntax: |
+    log() {
+      echo "$(date '+%F %T') | $1"
+    }
+    log "Starting backup..."
+  description: Timestamped logging utility
+
+- name: retry-loop
+  alias: [retry, attempts]
+  syntax: |
+    for i in {1..5}; do
+      curl http://localhost && break || sleep 2
+    done
+  description: Retry logic with backoff
+
+- name: background-jobs
+  alias: [bg, job]
+  syntax: |
+    ./heavy.sh &             # run in background
+    wait $!                  # wait for bg job
+  description: Run and control background tasks
+
+- name: process-monitoring
+  alias: [procmon, top]
+  syntax: |
+    ps aux | grep nginx      # check for process
+    pidof nginx              # get PID
+    kill -9 $pid             # force kill
+  description: Process monitoring and control
+
+- name: cron-format
+  alias: [schedule, cron]
+  syntax: |
+    # ┌ min (0-59)
+    # │ ┌ hour (0-23)
+    # │ │ ┌ day of month (1-31)
+    # │ │ │ ┌ month (1-12)
+    # │ │ │ │ ┌ day of week (0-6, Sunday=0)
+    # │ │ │ │ │
+    # * * * * * /script.sh
+  description: Cron job time expression breakdown
+
+- name: file-permissions
+  alias: [chmod, chown]
+  syntax: |
+    chmod 755 script.sh       # rwxr-xr-x
+    chown user:group file     # change owner
+  description: File permission & ownership
+
+- name: system-info
+  alias: [sysinfo, diag]
+  syntax: |
+    uname -a                  # kernel info
+    lsb_release -a            # distro details
+    df -h                     # disk usage
+    free -m                   # memory usage
+  description: Host diagnostics & inventory
+
+- name: networking
+  alias: [net, conn]
+  syntax: |
+    ip a                      # interface details
+    ss -tulnp                 # socket summary
+    ping -c3 8.8.8.8          # basic test
+    dig google.com            # DNS query
+  description: System-level network diagnostics
+
+- name: log-rotation
+  alias: [logs, logrotate]
+  syntax: |
+    logrotate /etc/logrotate.conf
+    tail -n 100 /var/log/syslog
+  description: Handle and read system logs
+
+- name: long-running-scripts
+  alias: [timeout, nohup]
+  syntax: |
+    nohup ./deploy.sh > out.log 2>&1 &
+    timeout 300 ./task.sh        # kill after 5min
+  description: Run or timeout long processes
+
+- name: check-service
+  alias: [svc, systemd]
+  syntax: |
+    systemctl status nginx       # check status
+    systemctl restart nginx      # restart service
+  description: Check & manage services (systemd)
+
+- name: validate-config
+  alias: [lint, sanity]
+  syntax: |
+    nginx -t                     # nginx config test
+    apachectl configtest         # apache
+    named-checkconf              # bind9
+  description: Sanity checks for infra config files
+
+- name: disk-health
+  alias: [smartctl, diskchk]
+  syntax: |
+    smartctl -a /dev/sda         # SMART stats
+    iostat -xz 1                 # disk I/O stats
+  description: Monitor disk health and IO
+
+- name: audit-security
+  alias: [audit, secure]
+  syntax: |
+    sudo lastlog                 # last login audit
+    sudo faillog -a              # failed logins
+    sudo auditctl -l             # audit rules
+  description: Security + access audit tools
+
+- name: ssh-script-loop
+  alias: [sshloop, remexec]
+  syntax: |
+    for host in host1 host2; do
+      ssh "$host" 'uptime'
+    done
+  description: Execute commands over SSH fleet
+
+- name: environment-control
+  alias: [envset, export]
+  syntax: |
+    export ENV=production        # export var
+    env | grep ENV               # list
+  description: Manage shell environment variables
+
+- name: build-release
+  alias: [build, release]
+  syntax: |
+    version="1.0.$(date +%s)"
+    echo "Release $version"
+    tar czf release-$version.tar.gz ./build
+  description: Simple script-based release versioning
