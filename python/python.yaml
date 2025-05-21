@@ -1,23 +1,396 @@
 - name: all
+  alias: [everything, full]
   syntax: compiled
   description: Aggregated Python syntax sections
 
-- name: list
+- name: vars
+  alias: [variables, assign, data]
   syntax: |
-    lst = [1, 2, 3]       # define list
-    lst.append(4)         # add element
-    lst.pop(0)            # remove first element
+    x = 10               # int var
+    y = "hello"          # string var
+    pi = 3.14            # float var
+  description: Variable assignment basics
+
+- name: ls
+  alias: [list, files, dir]
+  syntax: |
+    lst = [1, 2, 3]      # define list
+    lst.append(4)        # add element at end
+    lst.pop(0)           # remove first element
+    lst[1] = 10          # modify element
   description: Python lists basics
 
 - name: dict
+  alias: [map, hash, keyval]
   syntax: |
-    d = {'a': 1, 'b': 2}  # define dict
-    d['c'] = 3            # add key-value
-    del d['a']            # remove key
+    d = {'a': 1, 'b': 2} # define dict
+    d['c'] = 3           # add key-value
+    del d['a']           # remove key
+    val = d.get('b', 0)  # safe get key
   description: Python dictionaries basics
 
-- name: function
+- name: tuple
+  alias: [immutable, pack, unpack]
   syntax: |
-    def add(a, b):
+    t = (1, 2, 3)        # define immutable tuple
+    a, b, c = t          # unpack tuple
+  description: Tuple and unpacking basics
+
+- name: set
+  alias: [unique, collection]
+  syntax: |
+    s = {1, 2, 3}        # define unique set
+    s.add(4)             # add element
+    s.remove(2)          # remove element
+  description: Set basics
+
+- name: if_else
+  alias: [branch, condition, if, else]
+  syntax: |
+    if x > 0: print("Pos")
+    elif x == 0: print("Zero")
+    else: print("Neg")
+  description: Simple if-elif-else statement
+
+- name: loops
+  alias: [for_loop, while_loop, iterate, loop, for, while]
+  syntax: |
+    for i in range(3): print(i)
+
+    while x > 0:
+        x -= 1
+        print(x)
+  description: Basic for and while loops
+
+
+- name: func
+  alias: [functions, def, call]
+  syntax: |
+    def add(a, b):       # function def
         return a + b
-  description: Python functions
+
+    res = add(2, 3)      # function call
+  description: Python functions basics
+
+- name: lambda
+  alias: [anon, inline, func]
+  syntax: |
+    f = lambda x: x*2    # anon func
+    print(f(4))          # prints 8
+  description: Lambda functions
+
+- name: list_comp
+  alias: [comprehension, filter, lsloop, listloop, lscomp]
+  syntax: |
+    squares = [x*x for x in range(5)]          # list comp
+    evens = [x for x in range(10) if x%2==0]  # filtered list
+  description: List comprehensions
+
+- name: gen
+  alias: [generator, lazy, yield]
+  syntax: |
+    def gen():
+        yield 1          # yield item
+        yield 2
+
+    g = gen()
+    next(g)              # get next
+  description: Generators
+
+- name: class
+  alias: [oop, object, method]
+  syntax: |
+    class Person:
+        def __init__(self, name):      # constructor
+            self.name = name
+
+        def greet(self):               # method
+            return f"Hi, {self.name}"
+
+    p = Person("Alice")
+    print(p.greet())
+  description: Classes basics
+
+- name: decorators
+  alias: [wrap, modify, func]
+  syntax: |
+    def decorator(func):
+        def wrapper():
+            print("Before call")
+            func()
+            print("After call")
+        return wrapper
+
+    @decorator
+    def say_hello():
+        print("Hello")
+
+    say_hello()          # call decorated func
+  description: Function decorators basics
+
+- name: async
+  alias: [asyncio, coroutine, await]
+  syntax: |
+    import asyncio
+
+    async def hello():
+        print("Hello")
+        await asyncio.sleep(1)
+        print("World")
+
+    asyncio.run(hello())  # run coroutine
+  description: Async/await basics
+
+- name: exceptions
+  alias: [try, catch, error]
+  syntax: |
+    try:
+        x = 1 / 0            # risky code
+    except ZeroDivisionError:
+        print("Divide by zero!")
+    finally:
+        print("Always runs")
+  description: Exception handling basics
+
+- name: file_io
+  alias: [read, write, file]
+  syntax: |
+    with open('file.txt', 'r') as f:     # read file
+        data = f.read()
+
+    with open('file.txt', 'w') as f:     # write file
+        f.write("Hello")
+  description: File input/output
+
+- name: comprehension_dict
+  alias: [dictcomp, comprehension]
+  syntax: |
+    squared = {x: x*x for x in range(5)} # dict comprehension
+  description: Dictionary comprehension
+
+- name: comprehension_set
+  alias: [setcomp, comprehension]
+  syntax: |
+    unique = {x for x in range(5)}       # set comprehension
+  description: Set comprehension
+
+- name: context_manager
+  alias: [with, resource, safe]
+  syntax: |
+    with open('file.txt') as f:          # context manager
+        data = f.read()
+  description: Resource management
+
+- name: typing
+  alias: [typehint, annotation]
+  syntax: |
+    def add(a: int, b: int) -> int:      # type hints
+        return a + b
+  description: Static typing hints
+
+- name: threading
+  alias: [concurrent, thread]
+  syntax: |
+    import threading
+
+    def worker():
+        print("Worker thread")
+
+    t = threading.Thread(target=worker)
+    t.start()
+    t.join()
+  description: Basic threading
+
+- name: multiprocessing
+  alias: [process, parallel]
+  syntax: |
+    from multiprocessing import Process
+
+    def worker():
+        print("Process worker")
+
+    p = Process(target=worker)
+    p.start()
+    p.join()
+  description: Basic multiprocessing
+
+- name: regex
+  alias: [regex, re, pattern]
+  syntax: |
+    import re
+
+    pattern = r'\d+'
+    match = re.search(pattern, 'abc123')
+    if match:
+        print(match.group())           # prints '123'
+  description: Regular expressions basics
+
+- name: json
+  alias: [serialize, deserialize]
+  syntax: |
+    import json
+
+    data = {'a': 1}
+    s = json.dumps(data)               # serialize dict to json
+    d = json.loads(s)                  # deserialize json to dict
+  description: JSON handling
+
+- name: itertools
+  alias: [tools, iterator]
+  syntax: |
+    import itertools
+
+    for combo in itertools.combinations([1,2,3], 2):
+        print(combo)
+  description: itertools utilities
+
+- name: functools
+  alias: [tools, decorator]
+  syntax: |
+    from functools import lru_cache
+
+    @lru_cache(maxsize=32)
+    def fib(n):
+        if n < 2:
+            return n
+        return fib(n-1) + fib(n-2)
+  description: functools utilities
+
+- name: dataclasses
+  alias: [class, decorator, data]
+  syntax: |
+    from dataclasses import dataclass
+
+    @dataclass
+    class Point:
+        x: int
+        y: int
+  description: Data classes basics
+
+- name: memory_profiler
+  alias: [profile, memory]
+  syntax: |
+    from memory_profiler import profile
+
+    @profile
+    def my_func():
+        a = [1] * (10**6)
+        return a
+  description: Memory profiling (needs external package)
+
+- name: typechecking_runtime
+  alias: [mypy, typing]
+  syntax: |
+    # Run: mypy script.py
+  description: Static type checking tool (external)
+
+- name: multiprocessing_queue
+  alias: [mp, queue, parallel]
+  syntax: |
+    from multiprocessing import Process, Queue
+
+    def worker(q):
+        q.put("done")
+
+    q = Queue()
+    p = Process(target=worker, args=(q,))
+    p.start()
+    print(q.get())       # get from queue
+    p.join()
+  description: Inter-process communication
+
+- name: profiling
+  alias: [cProfile, optimize]
+  syntax: |
+    import cProfile
+
+    def func():
+        for i in range(1000):
+            pass
+
+    cProfile.run('func()')
+  description: Code profiling basics
+
+- name: socket
+  alias: [network, tcp, udp]
+  syntax: |
+    import socket
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(('example.com', 80))
+    s.send(b'GET / HTTP/1.0\r\n\r\n')
+    print(s.recv(1024))
+    s.close()
+  description: Basic TCP socket client
+
+- name: subprocess
+  alias: [shell, exec]
+  syntax: |
+    import subprocess
+
+    result = subprocess.run(['ls', '-l'], capture_output=True, text=True)
+    print(result.stdout)
+  description: Run shell commands
+
+- name: functools_partial
+  alias: [partial, functools]
+  syntax: |
+    from functools import partial
+
+    def power(base, exponent):
+        return base ** exponent
+
+    square = partial(power, exponent=2)
+    print(square(5))       # prints 25
+  description: Partial function application
+
+- name: csv
+  alias: [comma, file, spreadsheet]
+  syntax: |
+    import csv
+
+    with open('data.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            print(row)
+  description: CSV file reading
+
+- name: heapq
+  alias: [heap, priority]
+  syntax: |
+    import heapq
+
+    heap = []
+    heapq.heappush(heap, 5)
+    heapq.heappush(heap, 1)
+    print(heapq.heappop(heap))  # prints 1 (min element)
+  description: Heap queue (priority queue)
+
+- name: weakref
+  alias: [weak, reference, gc]
+  syntax: |
+    import weakref
+
+    class MyClass:
+        pass
+
+    obj = MyClass()
+    r = weakref.ref(obj)
+    print(r())        # original object or None if gc'd
+  description: Weak references
+
+- name: contextlib
+  alias: [context, manager]
+  syntax: |
+    from contextlib import contextmanager
+
+    @contextmanager
+    def my_context():
+        print("Enter")
+        yield
+        print("Exit")
+
+    with my_context():
+        print("Inside")
+  description: Custom context managers
+
