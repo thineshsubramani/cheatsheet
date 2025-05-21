@@ -1,3 +1,10 @@
+- name: shebang
+  alias: [start, base]
+  syntax: |
+    #!/bin/bash              # use bash shell
+    #!/bin/sh                # POSIX-compliant shell
+  description: Script interpreter declaration
+
 - name: variables
   alias: [vars, env]
   syntax: |
