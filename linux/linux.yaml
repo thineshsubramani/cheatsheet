@@ -1,394 +1,219 @@
 - name: all
-  alias: [everything, full]
+  alias: [all, linux, cmds]
   syntax: compiled
-  description: Aggregated Python syntax sections
-
-- name: vars
-  alias: [variables, assign, data]
-  syntax: |
-    x = 10               # int var
-    y = "hello"          # string var
-    pi = 3.14            # float var
-  description: Variable assignment basics
+  description: Aggregated Linux commands for DevOps/SRE
 
 - name: ls
   alias: [list, files, dir]
   syntax: |
-    lst = [1, 2, 3]      # define list
-    lst.append(4)        # add element at end
-    lst.pop(0)           # remove first element
-    lst[1] = 10          # modify element
-  description: Python lists basics
+    ls -la            # list all with hidden & details
+    tree              # show folder structure
+  description: List files and folders
 
-- name: dict
-  alias: [map, hash, keyval]
+- name: system
+  alias: [sys, info, status]
   syntax: |
-    d = {'a': 1, 'b': 2} # define dict
-    d['c'] = 3           # add key-value
-    del d['a']           # remove key
-    val = d.get('b', 0)  # safe get key
-  description: Python dictionaries basics
+    uname -a          # kernel + arch + OS
+    uptime            # how long system is up
+    hostname -I       # get local IP
+    top               # live process view
+    htop              # better top (needs install)
+    free -h           # RAM usage human-readable
+    vmstat 1          # CPU/mem/swap live stats
+  description: System info and status
 
-- name: tuple
-  alias: [immutable, pack, unpack]
+- name: disk
+  alias: [disk, storage, mount]
   syntax: |
-    t = (1, 2, 3)        # define immutable tuple
-    a, b, c = t          # unpack tuple
-  description: Tuple and unpacking basics
+    df -h             # disk usage per mount
+    du -sh *          # folder sizes in current dir
+    lsblk             # block devices info
+    mount             # show mounted filesystems
+    findmnt           # tree of mount points
+  description: Disk, mounts, and usage
 
-- name: set
-  alias: [unique, collection]
+- name: network
+  alias: [net, netstat, ip]
   syntax: |
-    s = {1, 2, 3}        # define unique set
-    s.add(4)             # add element
-    s.remove(2)          # remove element
-  description: Set basics
+    ip a              # show IPs
+    ss -tuln          # show open ports
+    netstat -tulnp    # legacy, same as ss (needs net-tools)
+    ping 8.8.8.8      # basic connectivity check
+    dig google.com    # DNS resolution
+    traceroute 8.8.8.8 # trace route to host
+    curl -I URL       # check HTTP headers
+  description: Network debug & connectivity
 
-- name: control_flow
-  alias: [ifelse, loop, branch]
+- name: files
+  alias: [file, cat, grep]
   syntax: |
-    if x > 0:            # if condition
-        print("Pos")
-    elif x == 0:         # else-if
-        print("Zero")
-    else:                # else
-        print("Neg")
+    cat file          # view file content
+    tail -f file      # live log tail
+    head -n 20 file   # first 20 lines
+    less file         # scrollable view
+    grep "text" file  # search in file
+    awk '{print $1}'  # column print
+    sed 's/old/new/g' # replace text inline
+  description: File reading, parsing
 
-    for i in range(3):   # for loop
-        print(i)
-
-    while x > 0:         # while loop
-        x -= 1
-  description: Control flow basics
-
-- name: func
-  alias: [functions, def, call]
+- name: package
+  alias: [pkg, apt, yum]
   syntax: |
-    def add(a, b):       # function def
-        return a + b
+    apt update && apt upgrade   # Debian/Ubuntu update
+    yum update                  # RHEL/CentOS update
+    dpkg -l | grep package      # check if package is installed
+  description: Package manager commands
 
-    res = add(2, 3)      # function call
-  description: Python functions basics
-
-- name: lambda
-  alias: [anon, inline, func]
+- name: services
+  alias: [svc, svcs, service]
   syntax: |
-    f = lambda x: x*2    # anon func
-    print(f(4))          # prints 8
-  description: Lambda functions
+    systemctl status nginx      # check service status
+    systemctl restart nginx     # restart service
+    journalctl -u nginx         # view service logs
+    systemctl enable nginx      # auto-start on boot
+  description: Systemd service management
 
-- name: list_comp
-  alias: [comprehension, loop, filter]
+- name: users
+  alias: [user, uid, groups]
   syntax: |
-    squares = [x*x for x in range(5)]          # list comp
-    evens = [x for x in range(10) if x%2==0]  # filtered list
-  description: List comprehensions
+    whoami              # current user
+    id                  # user UID/GID
+    groups              # list user groups
+    sudo su - user      # switch user
+    useradd -m user     # create user with home dir
+    passwd user         # set/change password
+  description: User and permission basics
 
-- name: gen
-  alias: [generator, lazy, yield]
+- name: processes
+  alias: [proc, ps, kill]
   syntax: |
-    def gen():
-        yield 1          # yield item
-        yield 2
+    ps aux              # show all processes
+    kill -9 PID         # force kill process
+    pkill -f name       # kill by process name
+  description: Process inspection and kill
 
-    g = gen()
-    next(g)              # get next
-  description: Generators
-
-- name: class
-  alias: [oop, object, method]
+- name: archive
+  alias: [tar, zip, compress]
   syntax: |
-    class Person:
-        def __init__(self, name):      # constructor
-            self.name = name
+    tar -czf file.tar.gz dir   # compress dir
+    tar -xzf file.tar.gz       # extract archive
+    zip -r file.zip dir        # zip a folder
+    unzip file.zip             # unzip file
+  description: Compress and extract files
 
-        def greet(self):               # method
-            return f"Hi, {self.name}"
-
-    p = Person("Alice")
-    print(p.greet())
-  description: Classes basics
-
-- name: decorators
-  alias: [wrap, modify, func]
+- name: perms
+  alias: [chmod, chown, permissions]
   syntax: |
-    def decorator(func):
-        def wrapper():
-            print("Before call")
-            func()
-            print("After call")
-        return wrapper
+    chmod +x file         # make file executable
+    chown user:group file # change owner
+    ls -l                 # show file perms
+    chmod u+s bin         # SUID: run as file owner (e.g. root)
+    chmod g+s dir         # SGID: files in dir inherit group
+    chmod +t /tmp         # Sticky: only owner can delete files
+  description: File permissions and ownership
 
-    @decorator
-    def say_hello():
-        print("Hello")
-
-    say_hello()          # call decorated func
-  description: Function decorators basics
-
-- name: async
-  alias: [asyncio, coroutine, await]
+- name: logs
+  alias: [log, syslog, journal]
   syntax: |
-    import asyncio
+    tail -n 100 /var/log/syslog     # view last 100 lines
+    journalctl -xe                  # system logs with errors
+    dmesg | less                    # kernel logs
+  description: System and service logs
 
-    async def hello():
-        print("Hello")
-        await asyncio.sleep(1)
-        print("World")
-
-    asyncio.run(hello())  # run coroutine
-  description: Async/await basics
-
-- name: exceptions
-  alias: [try, catch, error]
+- name: ssh
+  alias: [ssh, scp, rsync]
   syntax: |
-    try:
-        x = 1 / 0            # risky code
-    except ZeroDivisionError:
-        print("Divide by zero!")
-    finally:
-        print("Always runs")
-  description: Exception handling basics
+    ssh user@host              # connect to remote
+    scp file user@host:/path   # copy file to remote
+    rsync -avz src/ user@host:/dst # sync with compression
+  description: Remote login and file transfer
 
-- name: file_io
-  alias: [read, write, file]
+- name: docker
+  alias: [docker, container, images]
   syntax: |
-    with open('file.txt', 'r') as f:     # read file
-        data = f.read()
+    docker ps -a               # all containers
+    docker images              # list images
+    docker exec -it id bash    # shell into container
+    docker logs -f id          # follow container logs
+  description: Common Docker commands
 
-    with open('file.txt', 'w') as f:     # write file
-        f.write("Hello")
-  description: File input/output
-
-- name: comprehension_dict
-  alias: [dictcomp, comprehension]
+- name: docker
+  alias: [docker, container, images]
   syntax: |
-    squared = {x: x*x for x in range(5)} # dict comprehension
-  description: Dictionary comprehension
+    docker ps -a               # all containers
+    docker images              # list images
+    docker exec -it id bash    # shell into container
+    docker logs -f id          # follow container logs
 
-- name: comprehension_set
-  alias: [setcomp, comprehension]
+- name: procfs
+  alias: [procfs, proc]
   syntax: |
-    unique = {x for x in range(5)}       # set comprehension
-  description: Set comprehension
+    cat /proc/cpuinfo         # CPU details
+    cat /proc/meminfo         # Memory info
+    cat /proc/uptime          # System uptime
+    cat /proc/$$/status       # Specific process info
 
-- name: context_manager
-  alias: [with, resource, safe]
+- name: sysfs
+  alias: [sysfs, sys]
   syntax: |
-    with open('file.txt') as f:          # context manager
-        data = f.read()
-  description: Resource management
+    cat /sys/class/net/eth0/operstate   # NIC up/down?
+    cat /sys/block/sda/size             # Disk size
 
-- name: typing
-  alias: [typehint, annotation]
+- name: etc
+  alias: [config, etc]
   syntax: |
-    def add(a: int, b: int) -> int:      # type hints
-        return a + b
-  description: Static typing hints
+    cat /etc/passwd         # users list
+    cat /etc/group          # groups list
+    cat /etc/hosts          # static DNS
+    ls /etc/network/        # network config (older distros)
+    ls /etc/systemd/        # systemd services
 
-- name: threading
-  alias: [concurrent, thread]
+- name: var_log
+  alias: [logs, varlog]
   syntax: |
-    import threading
+    tail /var/log/syslog         # system messages
+    tail /var/log/auth.log       # login/auth attempts
+    tail /var/log/kern.log       # kernel logs
+    dmesg                        # boot-time logs
 
-    def worker():
-        print("Worker thread")
-
-    t = threading.Thread(target=worker)
-    t.start()
-    t.join()
-  description: Basic threading
-
-- name: multiprocessing
-  alias: [process, parallel]
+- name: dev
+  alias: [devices, dev]
   syntax: |
-    from multiprocessing import Process
+    ls -l /dev/sda       # first disk
+    ls -l /dev/null      # bitbucket
+    ls -l /dev/tty       # terminal
 
-    def worker():
-        print("Process worker")
-
-    p = Process(target=worker)
-    p.start()
-    p.join()
-  description: Basic multiprocessing
-
-- name: regex
-  alias: [regex, re, pattern]
+- name: kernel_and_hardware
+  alias: [kernel, hardware, cpu]
   syntax: |
-    import re
+    uname -r              # kernel version
+    uname -a              # kernel + arch + hostname
+    hostnamectl           # OS and kernel info
+    lscpu                 # CPU info
+    lsblk                 # block devices (disk)
+    lspci                 # PCI devices (GPU/NIC)
+    lsusb                 # USB devices
+    free -h               # RAM usage
+    dmidecode             # BIOS, serial, board info
+    cat /proc/cpuinfo     # raw CPU info
+    cat /proc/meminfo     # raw RAM info
+    cat /proc/version     # kernel version string
 
-    pattern = r'\d+'
-    match = re.search(pattern, 'abc123')
-    if match:
-        print(match.group())           # prints '123'
-  description: Regular expressions basics
-
-- name: json
-  alias: [serialize, deserialize]
+- name: users_groups
+  alias: [users, groups, accounts]
   syntax: |
-    import json
+    whoami                  # current user
+    id                      # UID, GID, groups
+    groups                  # current user's groups
+    getent passwd user      # user info
+    getent group group      # group info
 
-    data = {'a': 1}
-    s = json.dumps(data)               # serialize dict to json
-    d = json.loads(s)                  # deserialize json to dict
-  description: JSON handling
+    adduser newuser         # create new user (Debian)
+    useradd -m newuser      # create user + home dir
+    passwd newuser          # set password
 
-- name: itertools
-  alias: [tools, iterator]
-  syntax: |
-    import itertools
-
-    for combo in itertools.combinations([1,2,3], 2):
-        print(combo)
-  description: itertools utilities
-
-- name: functools
-  alias: [tools, decorator]
-  syntax: |
-    from functools import lru_cache
-
-    @lru_cache(maxsize=32)
-    def fib(n):
-        if n < 2:
-            return n
-        return fib(n-1) + fib(n-2)
-  description: functools utilities
-
-- name: dataclasses
-  alias: [class, decorator, data]
-  syntax: |
-    from dataclasses import dataclass
-
-    @dataclass
-    class Point:
-        x: int
-        y: int
-  description: Data classes basics
-
-- name: memory_profiler
-  alias: [profile, memory]
-  syntax: |
-    from memory_profiler import profile
-
-    @profile
-    def my_func():
-        a = [1] * (10**6)
-        return a
-  description: Memory profiling (needs external package)
-
-- name: typechecking_runtime
-  alias: [mypy, typing]
-  syntax: |
-    # Run: mypy script.py
-  description: Static type checking tool (external)
-
-- name: multiprocessing_queue
-  alias: [mp, queue, parallel]
-  syntax: |
-    from multiprocessing import Process, Queue
-
-    def worker(q):
-        q.put("done")
-
-    q = Queue()
-    p = Process(target=worker, args=(q,))
-    p.start()
-    print(q.get())       # get from queue
-    p.join()
-  description: Inter-process communication
-
-- name: profiling
-  alias: [cProfile, optimize]
-  syntax: |
-    import cProfile
-
-    def func():
-        for i in range(1000):
-            pass
-
-    cProfile.run('func()')
-  description: Code profiling basics
-
-- name: socket
-  alias: [network, tcp, udp]
-  syntax: |
-    import socket
-
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(('example.com', 80))
-    s.send(b'GET / HTTP/1.0\r\n\r\n')
-    print(s.recv(1024))
-    s.close()
-  description: Basic TCP socket client
-
-- name: subprocess
-  alias: [shell, exec]
-  syntax: |
-    import subprocess
-
-    result = subprocess.run(['ls', '-l'], capture_output=True, text=True)
-    print(result.stdout)
-  description: Run shell commands
-
-- name: functools_partial
-  alias: [partial, functools]
-  syntax: |
-    from functools import partial
-
-    def power(base, exponent):
-        return base ** exponent
-
-    square = partial(power, exponent=2)
-    print(square(5))       # prints 25
-  description: Partial function application
-
-- name: csv
-  alias: [comma, file, spreadsheet]
-  syntax: |
-    import csv
-
-    with open('data.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            print(row)
-  description: CSV file reading
-
-- name: heapq
-  alias: [heap, priority]
-  syntax: |
-    import heapq
-
-    heap = []
-    heapq.heappush(heap, 5)
-    heapq.heappush(heap, 1)
-    print(heapq.heappop(heap))  # prints 1 (min element)
-  description: Heap queue (priority queue)
-
-- name: weakref
-  alias: [weak, reference, gc]
-  syntax: |
-    import weakref
-
-    class MyClass:
-        pass
-
-    obj = MyClass()
-    r = weakref.ref(obj)
-    print(r())        # original object or None if gc'd
-  description: Weak references
-
-- name: contextlib
-  alias: [context, manager]
-  syntax: |
-    from contextlib import contextmanager
-
-    @contextmanager
-    def my_context():
-        print("Enter")
-        yield
-        print("Exit")
-
-    with my_context():
-        print("Inside")
-  description: Custom context managers
-
+    usermod -aG sudo user   # add user to sudo
+    groupadd devs           # create group
+    gpasswd -a user devs    # add user to group
+    deluser user            # remove user
+    delgroup group          # remove group
