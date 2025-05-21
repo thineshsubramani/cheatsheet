@@ -236,6 +236,63 @@
     }
   description: Struct-based FIFO queue with enqueue/dequeue and loop
 
+
+- name: csv
+  alias: [csv]
+  syntax: |
+    f, _ := os.Open("data.csv")           // Open CSV file
+    defer f.Close()                       // Ensure file closes
+    r := csv.NewReader(f)                 // Create CSV reader
+    records, _ := r.ReadAll()             // Read all records
+    for _, rec := range records {
+        fmt.Println(strings.Join(rec, ","))  // Print CSV line as string
+    }
+    conn, _ := net.Dial("tcp", "server:port")  // Open TCP connection
+    defer conn.Close()                      // Close connection after use
+    for _, rec := range records {
+        conn.Write([]byte(strings.Join(rec, ",") + "\n"))  // Send CSV line
+    }
+  description: Load CSV, print lines, send over TCP
+
+- name: json
+  alias: [json]
+  syntax: |
+    f, _ := os.Open("data.json")              // Open JSON file
+    defer f.Close()                           // Close file later
+    var data map[string]interface{}           // JSON into map
+    json.NewDecoder(f).Decode(&data)          // Decode JSON
+    b, _ := json.MarshalIndent(data, "", "  ") // Pretty-print JSON
+    fmt.Println(string(b))                     // Print JSON string
+    jsonBytes, _ := json.Marshal(data)        // Marshal for sending
+    http.Post("http://server/api", "application/json", bytes.NewBuffer(jsonBytes))  // Send HTTP POST
+  description: Load JSON, print pretty, send HTTP POST
+
+- name: grpc
+  alias: [grpc, grpc-go, rpc]
+  syntax: |
+    syntax = "proto3";                         // Proto3 syntax
+
+    package helloworld;                        // Package name
+
+    service Greeter {                          // gRPC service
+        rpc SayHello (HelloRequest) returns (HelloReply);  // RPC method
+    }
+
+    message HelloRequest {                     // Request message
+        string name = 1;                       // Name field
+    }
+
+    message HelloReply {                       // Reply message
+        string message = 1;                    // Message field
+    }
+
+    conn, _ := grpc.Dial("server:50051", grpc.WithInsecure())  // Connect to server
+    defer conn.Close()                         // Close connection
+    client := pb.NewGreeterClient(conn)       // Create gRPC client
+    resp, _ := client.SayHello(context.Background(), &pb.HelloRequest{Name: "Thinesh"})  // Call RPC
+    fmt.Println("Greeting:", resp.Message)    // Print reply
+  description: Proto + Go client for gRPC call
+
 - name: network
   alias: [net,socket]
   syntax: |

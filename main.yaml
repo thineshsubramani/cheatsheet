@@ -74,10 +74,10 @@ languages:
     description: "Essential and advanced Ansible commands, playbook syntax, inventory, and modules for automation and configuration management."
     database: "ansible/ansible.yaml"
     alias:
-      - ansible
-      - automation
-      - configmgmt
-      - infra
+      - ansi
+      - cfg
+      - config
+      - congigmanagement
 
   - name: opensource
     title: "Open Source Workflow Cheatsheet"
