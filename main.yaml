@@ -33,8 +33,20 @@ languages:
     database: "linux/linux.yaml"
     alias:
       - linux
-      - bash
+      - li
+      - penguin
+      - penguins
       - ubuntu
+      
+- name: bash
+  title: "Bash CLI Cheatsheet"
+  version: "6.14.7"
+  description: "Everyday Linux commands and sysadmin shortcuts."
+  database: "bash/bash.yaml"
+  alias:
+    - sh
+    - shell
+    - bashscript
   
   - name: kubernetes
     title: "Kubernetes Cheatsheet"
