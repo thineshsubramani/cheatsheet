@@ -67,7 +67,18 @@ languages:
     alias:
       - git
       - g
-      
+
+  - name: ansible
+    title: "Ansible Cheatsheet"
+    version: "2.15.0"          
+    description: "Essential and advanced Ansible commands, playbook syntax, inventory, and modules for automation and configuration management."
+    database: "ansible/ansible.yaml"
+    alias:
+      - ansible
+      - automation
+      - configmgmt
+      - infra
+
   - name: opensource
     title: "Open Source Workflow Cheatsheet"
     version: "1.0.0"

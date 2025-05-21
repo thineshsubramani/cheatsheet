@@ -1,0 +1,267 @@
+- name: ansible_basics
+  alias: [ansible, basics, syntax, cli]
+  syntax: |
+    ansible all -m ping                            # Test connectivity on all hosts
+    ansible-playbook playbook.yml                  # Run a playbook file
+    ansible-inventory --list                        # Show static/dynamic inventory
+    ansible-playbook playbook.yml -i inventory.ini # Specify custom inventory file
+    ansible-playbook playbook.yml -vvv              # Verbose mode for debugging
+  description: Basic Ansible CLI commands and usage
+
+- name: inventory_management
+  alias: [inventory, hosts, groups]
+  syntax: |
+    # Static inventory (hosts.ini)
+    [webservers]
+    web1.example.com
+    web2.example.com
+
+    [dbservers]
+    db1.example.com
+
+    # Dynamic inventory example for AWS
+    ansible-inventory -i aws_ec2.yml --list
+
+    # Sample dynamic inventory config for AWS (aws_ec2.yml)
+    plugin: aws_ec2
+    regions:
+      - us-east-1
+    filters:
+      tag:Environment: production
+  description: Managing static and dynamic inventories (AWS/GCP)
+
+- name: file_dir_management
+  alias: [files, directories, manage]
+  syntax: |
+    - name: Create directory with permissions
+      ansible.builtin.file:
+        path: /var/www/html
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Copy file from local to remote
+      ansible.builtin.copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Manage symlink
+      ansible.builtin.file:
+        src: /var/www/html/releases/v1
+        dest: /var/www/html/current
+        state: link
+  description: Playbook tasks for file and directory handling
+
+- name: package_management
+  alias: [packages, install, yum, apt]
+  syntax: |
+    - name: Install nginx on RHEL/CentOS
+      ansible.builtin.yum:
+        name: nginx
+        state: latest
+
+    - name: Install nginx on Debian/Ubuntu
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Remove package
+      ansible.builtin.package:
+        name: httpd
+        state: absent
+  description: Manage package installation and removal (yum/apt/package)
+
+- name: service_management
+  alias: [services, start, stop, restart]
+  syntax: |
+    - name: Start nginx service and enable on boot
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Restart service when config changes
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+  description: Managing Linux services with Ansible
+
+- name: imperative_commands
+  alias: [adhoc, quick, run, shell]
+  syntax: |
+    ansible all -m shell -a "uptime"                      # Run shell command on all hosts
+    ansible web -m command -a "systemctl status nginx"    # Check nginx status on web group
+    ansible db -m yum -a "name=mysql state=latest"        # Install latest mysql package on db group
+  description: Quick one-liner commands for ad-hoc execution
+
+- name: variables_and_facts
+  alias: [vars, facts, register, set_fact]
+  syntax: |
+    - name: Set static variable
+      vars:
+        http_port: 8080
+
+    - name: Register output from command
+      ansible.builtin.command: cat /etc/os-release
+      register: os_release
+
+    - name: Use registered variable
+      debug:
+        msg: "OS info: {{ os_release.stdout }}"
+
+    - name: Set dynamic fact
+      set_fact:
+        my_var: "dynamic_value"
+  description: Variables, facts, and output capture
+
+- name: loops_conditionals
+  alias: [loop, with_items, when, condition]
+  syntax: |
+    - name: Create multiple users
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - alice
+        - bob
+        - charlie
+
+    - name: Install package only on Debian
+      ansible.builtin.package:
+        name: nginx
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+  description: Control flow with loops and conditions
+
+- name: templates_and_jinja
+  alias: [jinja, template, config]
+  syntax: |
+    - name: Deploy nginx config from template
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    # Sample nginx.conf.j2 snippet
+    server {
+      listen {{ http_port }};
+      server_name {{ ansible_fqdn }};
+      root /var/www/html;
+    }
+  description: Using Jinja2 templates for dynamic config files
+
+- name: handlers_and_notify
+  alias: [handlers, notify, service_restart]
+  syntax: |
+    tasks:
+      - name: Copy nginx config
+        ansible.builtin.copy:
+          src: nginx.conf
+          dest: /etc/nginx/nginx.conf
+        notify: restart nginx
+
+    handlers:
+      - name: restart nginx
+        ansible.builtin.service:
+          name: nginx
+          state: restarted
+  description: Notify handlers for reactive service restarts
+
+- name: roles_and_includes
+  alias: [roles, includes, modular]
+  syntax: |
+    - hosts: all
+      roles:
+        - common
+        - webserver
+
+    # roles/common/tasks/main.yml
+    - name: Install common packages
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - vim
+        - curl
+        - git
+  description: Structuring playbooks with roles for modularity
+
+- name: vault_and_secrets
+  alias: [vault, encrypt, secrets]
+  syntax: |
+    # Encrypt secrets
+    ansible-vault encrypt secrets.yml
+
+    # Run playbook with vault password prompt
+    ansible-playbook site.yml --ask-vault-pass
+
+    # Use vault-encrypted variables inside playbooks
+    vars_files:
+      - secrets.yml
+  description: Handling secrets securely with Ansible Vault
+
+- name: advanced_debugging
+  alias: [debug, verbose, troubleshooting]
+  syntax: |
+    - name: Debug variable value
+      ansible.builtin.debug:
+        var: my_var
+
+    # Run playbook in verbose mode (debug)
+    ansible-playbook playbook.yml -vvv
+
+    - name: Pause for manual intervention
+      ansible.builtin.pause:
+        prompt: "Press enter to continue"
+
+  description: Debugging and troubleshooting playbooks
+
+- name: async_polling
+  alias: [async, background, wait_for]
+  syntax: |
+    - name: Run a long task asynchronously
+      ansible.builtin.shell: /usr/bin/long_running_script.sh
+      async: 3600
+      poll: 0
+      register: async_task
+
+    - name: Wait for async task to finish
+      async_status:
+        jid: "{{ async_task.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 30
+      delay: 10
+  description: Running background tasks asynchronously with polling
+
+- name: cloud_integration
+  alias: [aws, gcp, dynamic_inventory, cloud]
+  syntax: |
+    # AWS dynamic inventory setup example
+    ansible-inventory -i aws_ec2.yaml --list
+
+    # Use boto3-based AWS modules to manage infra
+    - name: Create EC2 instance (simplified)
+      amazon.aws.ec2_instance:
+        key_name: mykey
+        instance_type: t2.micro
+        image_id: ami-0abcdef1234567890
+        wait: yes
+        region: us-east-1
+
+    # GCP dynamic inventory using gcp_compute
+    # inventory_gcp.yaml
+    plugin: gcp_compute
+    projects:
+      - my-gcp-project
+    zones:
+      - us-central1-a
+  description: Use Ansible to manage cloud resources and dynamic inventory
+
