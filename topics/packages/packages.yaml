@@ -1,0 +1,124 @@
+- name: apt
+  alias: [apt-get, debian-package-manager]
+  syntax: |
+    # Update repo metadata
+    sudo apt update                              # refresh repos (/etc/apt/sources.list.d/*.list)
+    sudo apt install pkg                         # install package with deps
+    sudo apt remove pkg                          # uninstall package
+    sudo apt upgrade                             # upgrade all packages
+    sudo apt autoremove                          # remove unused deps
+    # Manual repo add: echo "deb http://archive.ubuntu.com/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/custom.list
+    # Add GPG key: curl -fsSL https://repo-url/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/custom-archive-keyring.gpg
+    # Repo files dir: /etc/apt/sources.list.d/
+    # Keyrings dir: /usr/share/keyrings/
+  description: Debian/Ubuntu package manager, automatic deps, repos under /etc/apt/sources.list.d, keys in /usr/share/keyrings
+
+- name: snap
+  alias: [snapd, snaps]
+  syntax: |
+    sudo snap install pkg                       # install snap package (no repos, central store)
+    sudo snap remove pkg                        # remove snap package
+    snap list                                  # list installed snaps
+    snap refresh                               # update snaps
+    # No manual repo or keyring config (managed internally)
+  description: Universal Linux containerized packages, sandboxed, no repo config needed
+
+- name: snap (manual install)
+  alias: [snapd-manual]
+  syntax: |
+    sudo snap download pkg                     # download snap as .snap file
+    sudo unsquashfs pkg.snap                   # extract snap (read-only squashfs)
+    sudo snap ack pkg.assert                   # acknowledge assertion (security)
+    sudo snap install pkg.snap --dangerous    # manual install (no store verification)
+    # Repo: managed by snapd daemon internally
+  description: Snap manual download & install process, for offline or custom installs
+
+- name: pacman
+  alias: [arch-pacman]
+  syntax: |
+    sudo pacman -Syu                           # sync repos + upgrade system (/etc/pacman.conf)
+    sudo pacman -S pkg                         # install package
+    sudo pacman -R pkg                         # remove package
+    sudo pacman -Sc                           # clean cache
+    # Edit /etc/pacman.conf to add repos
+    # Keyring dir: /etc/pacman.d/gnupg
+    # Init keys: sudo pacman-key --init && sudo pacman-key --populate
+  description: Arch Linux package manager, manual repo editing in /etc/pacman.conf, uses pacman-key for GPG
+
+- name: dpkg
+  alias: [deb-manual,dkpg-manual]
+  syntax: |
+    wget http://deb-url/package.deb            # download .deb file manually
+    sudo dpkg -i package.deb                    # install local .deb, no auto deps
+    sudo apt-get install -f                     # fix missing dependencies after dpkg
+    dpkg -l                                  # list installed
+    sudo dpkg -r package                         # remove package
+    # Repos handled by apt, dpkg just low-level installer
+  description: Manual Debian package handling, dpkg no deps, fix with apt-get -f
+
+- name: yum
+  alias: [centos-package-manager,centos]
+  syntax: |
+    sudo yum check-update                     # check updates (/etc/yum.repos.d/*.repo)
+    sudo yum install pkg                      # install package
+    sudo yum remove pkg                       # remove package
+    sudo yum update                          # upgrade packages
+    # Import GPG key: sudo rpm --import /path/to/RPM-GPG-KEY
+    # Repo files: /etc/yum.repos.d/
+    # Keyrings dir: /etc/pki/rpm-gpg/
+  description: RPM-based package manager for CentOS/RHEL 7, repos in /etc/yum.repos.d/, GPG keys in /etc/pki/rpm-gpg
+
+- name: dnf
+  alias: [fedora-package-manager,fedora]
+  syntax: |
+    sudo dnf check-update                     # check updates (/etc/yum.repos.d/*.repo)
+    sudo dnf install pkg                      # install package
+    sudo dnf remove pkg                       # remove package
+    sudo dnf upgrade                         # upgrade packages
+    # Repo files: /etc/yum.repos.d/
+    # Import GPG keys same as yum
+    # Keyrings dir: /etc/pki/rpm-gpg/
+  description: Fedora/RHEL 8+ package manager, same repo and key locations as yum, modern and faster
+
+- name: rpm
+  alias: [rpm-package-manager,rpm-pkg]
+  syntax: |
+    sudo rpm -ivh pkg.rpm                      # install rpm package (no deps)
+    sudo rpm -Uvh pkg.rpm                      # upgrade or install
+    sudo rpm -e pkg                            # erase/uninstall package
+    rpm -qa                                   # list installed
+    rpm --import /path/to/RPM-GPG-KEY         # import GPG key manually
+    # No repo management (handled by yum/dnf/zypper)
+  description: Low-level RPM package tool, no automatic repo management, manual GPG keys required
+
+- name: zypper
+  alias: [opensuse-package-manager]
+  syntax: |
+    sudo zypper refresh                        # refresh repos (/etc/zypp/repos.d/*.repo)
+    sudo zypper install pkg                    # install package
+    sudo zypper remove pkg                     # remove package
+    sudo zypper update                        # upgrade packages
+    sudo rpm --import /path/to/RPM-GPG-KEY    # import keys for repos
+    # Repo files: /etc/zypp/repos.d/
+    # Keys: /etc/pki/trust/anchors/
+  description: openSUSE package manager, repos in /etc/zypp/repos.d/, manual GPG keys with rpm --import
+
+- name: flatpak
+  alias: [flatpak,fp]
+  syntax: |
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo # add repo
+    flatpak install flathub pkg               # install package
+    flatpak update                            # update all
+    flatpak uninstall pkg                     # remove package
+    flatpak list                              # list installed
+    # No manual keyring management, handled internally
+  description: Universal Linux sandboxed apps, repo-based but keyring handled automatically
+
+- name: rpm-manual
+  alias: [rpm-manual]
+  syntax: |
+    wget http://rpm-url/package.rpm            # download rpm package manually
+    sudo rpm -ivh package.rpm                   # install rpm no auto deps
+    sudo yum install -y package.rpm             # better for deps on yum-based distros
+    sudo rpm -e package                          # remove rpm package
+  description: Manual RPM package handling, rpm low-level install, yum preferred for deps

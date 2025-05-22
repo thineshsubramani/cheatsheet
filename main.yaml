@@ -3,7 +3,7 @@ languages:
     title: "GoLang Cheatsheet"
     version: "1.24.3"
     description: "Minimal GoLang syntax reference for daily use."
-    database: "golang/golang.yaml"
+    database: "topics/golang/golang.yaml"
     alias:
       - go
       - g
@@ -13,7 +13,7 @@ languages:
     title: "Python Cheatsheet"
     version: "3.13.3"
     description: "Essential Python commands and syntax."
-    database: "python/python.yaml"
+    database: "topics/python/python.yaml"
     alias:
       - py
       - python
@@ -22,7 +22,7 @@ languages:
     title: "C Language Cheatsheet"
     version: "11.3.0"
     description: "From basic syntax to hardcore systems programming in C."
-    database: "c/c.yaml"
+    database: "topics/c/c.yaml"
     alias:
       - c
 
@@ -30,7 +30,7 @@ languages:
     title: "Linux CLI Cheatsheet"
     version: "6.14.7"
     description: "Everyday Linux commands and sysadmin shortcuts."
-    database: "linux/linux.yaml"
+    database: "topics/linux/linux.yaml"
     alias:
       - linux
       - li
@@ -42,7 +42,7 @@ languages:
     title: "Bash CLI Cheatsheet"
     version: "6.14.7"
     description: "Everyday Linux commands and sysadmin shortcuts."
-    database: "bash/bash.yaml"
+    database: "topics/bash/bash.yaml"
     alias:
       - sh
       - shell
@@ -52,7 +52,7 @@ languages:
     title: "Kubernetes Cheatsheet"
     version: "1.28.0"
     description: "kubectl, kubeadm commands with advanced usage and quick refs."
-    database: "kubernetes/kubernetes.yaml"
+    database: "topics/kubernetes/kubernetes.yaml"
     alias:
       - k8s
       - kube
@@ -63,7 +63,7 @@ languages:
     title: "Git Cheatsheet"
     version: "2.45.0"
     description: "Core and advanced Git commands for source control."
-    database: "git/git.yaml"
+    database: "topics/git/git.yaml"
     alias:
       - git
       - g
@@ -72,7 +72,7 @@ languages:
     title: "Ansible Cheatsheet"
     version: "2.15.0"          
     description: "Essential and advanced Ansible commands, playbook syntax, inventory, and modules for automation and configuration management."
-    database: "ansible/ansible.yaml"
+    database: "topics/ansible/ansible.yaml"
     alias:
       - ansi
       - cfg
@@ -83,7 +83,7 @@ languages:
     title: "Open Source Workflow Cheatsheet"
     version: "1.0.0"
     description: "Best practices for GitHub issues, commits, licenses, and releases."
-    database: "opensource/opensource.yaml"
+    database: "topics/opensource/opensource.yaml"
     alias:
       - oss
       - open-source

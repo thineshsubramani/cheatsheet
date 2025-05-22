@@ -4,7 +4,7 @@
   description: Aggregated Python syntax sections
 
 - name: vars
-  alias: [variables, assign, data]
+  alias: [variables, assign, data, var]
   syntax: |
     x = 10               # int var
     y = "hello"          # string var
