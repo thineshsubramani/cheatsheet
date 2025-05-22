@@ -89,3 +89,13 @@ languages:
       - open-source
       - open
       - practices
+
+  - name: networking
+    title: "Networking Fundamentals Cheatsheet"
+    version: "1.0.0"
+    description: "Core concepts every SRE, DevOps, and system engineer must know: CIDR, IP classes, BGP, firewalls, ICMP, packets, and more."
+    database: "topics/networking/networking.yaml"
+    alias:
+      - net
+      - network
+      - tcpip

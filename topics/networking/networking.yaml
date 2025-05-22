@@ -1,0 +1,295 @@
+- name: ip-addressing
+  alias: [ip,ipv4,ipv6]
+  syntax: |
+    IPv4: 32-bit numeric format (e.g. 192.168.1.1), supports ~4.3B addresses
+    IPv6: 128-bit hex format (e.g. fe80::1), eliminates IPv4 exhaustion
+    Loopback: 127.0.0.1 for local host testing
+    Private IP ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
+  description: IP addresses uniquely identify nodes in a network. IPv6 future-proofs infra. Loopback used for local-only communication.
+
+- name: cidr-subnetting
+  alias: [cidr,subnet,mask]
+  syntax: |
+    CIDR: Slash notation for subnet size (e.g. /24 = 256 IPs)
+    /30: 4 IPs total, 2 usable (common in P2P links)
+    /32: 1 IP only (host address, used in firewalls and BGP)
+    Subnet mask: Legacy notation (e.g. 255.255.255.0 = /24)
+  description: Controls how IP ranges are split into network and host parts. Powers efficient IP management and isolation.
+
+- name: routing
+  alias: [route,gateway,router]
+  syntax: |
+    Default gateway: Exit point for traffic outside current subnet
+    Routing table: Kernel-based path lookup for packet forwarding
+    Static route: Manual override to force path (e.g. 192.168.2.0/24 via 10.0.0.1)
+    Metric: Lower = higher priority; used for route selection
+  description: Routing defines the packet’s journey. Default route handles unknowns. Metrics determine best available path.
+
+- name: nat
+  alias: [nat,snat,dnat,masquerade]
+  syntax: |
+    SNAT: Rewrites source IP (e.g. LAN to WAN translation)
+    DNAT: Rewrites destination IP (e.g. port forwarding 80 → 8080)
+    Masquerade: Dynamic SNAT using outgoing interface IP (for DHCP/public IP)
+    Used in firewalls and cloud VPCs to provide public access
+  description: NAT modifies IPs in packets to enable private-to-public traffic, load balancing, and port mapping.
+
+- name: dhcp
+  alias: [dhcp,ip-lease]
+  syntax: |
+    Dynamic IP assignment: Client gets IP from DHCP server
+    DHCP lease: Temporary IP config (includes IP, subnet, gateway, DNS)
+    Common in WiFi, cloud instances, and internal VLANs
+    Can reserve MAC-based IPs in DHCP servers
+  description: DHCP automates IP config. Reduces manual net setup. Used in cloud, home, and enterprise.
+
+- name: dns
+  alias: [dns,domain,resolver]
+  syntax: |
+    Domain → IP resolution: e.g. google.com → 142.250.x.x
+    Resolver: First contact for domain lookups (e.g. /etc/resolv.conf)
+    Recursive vs authoritative: Recursive asks around; authoritative owns the zone
+    Public DNS: 8.8.8.8 (Google), 1.1.1.1 (Cloudflare), 9.9.9.9 (Quad9)
+  description: DNS converts human-friendly names to IPs. Backbone of the web. Misconfig = instant outage.
+
+- name: vlan
+  alias: [vlan,802.1q,virtual-lan]
+  syntax: |
+    VLAN ID: Tag (1-4094) assigned to segment broadcast domains
+    802.1Q: Tagging protocol for VLAN traffic over trunk links
+    Access port: Belongs to one VLAN only
+    Trunk port: Carries multiple VLANs via tags
+  description: VLANs logically split networks on the same physical hardware. Boosts security, isolation, and performance.
+
+- name: bgp
+  alias: [bgp,border-gateway-protocol]
+  syntax: |
+    Path vector protocol: Chooses best route based on policies
+    AS number: Unique ID for an autonomous system (e.g. 64512-65534 private)
+    eBGP: Between orgs; iBGP: Within org
+    Used by ISPs, clouds, data centers for external route exchange
+  description: BGP handles inter-network routing (Internet backbone). Powers AWS/GCP/VPC peering and cloud edge routing.
+
+- name: mtu
+  alias: [mtu,packet-size]
+  syntax: |
+    MTU: Max size of a packet without fragmentation (e.g. 1500 bytes for Ethernet)
+    Lower MTU = less fragmentation, more overhead
+    Path MTU Discovery: Determines safe packet size across route
+  description: MTU tuning affects performance. Wrong MTU = slowdowns, TCP issues, black hole routes.
+
+- name: tcp-udp
+  alias: [tcp,udp,transport]
+  syntax: |
+    TCP: Reliable, connection-based, ordered (used by HTTP, SSH, etc.)
+    UDP: Fire-and-forget, fast, no retransmit (used by DNS, VoIP)
+    Port numbers: Identify services (e.g. 22=SSH, 80=HTTP)
+  description: Core transport protocols. Choose TCP for reliability, UDP for speed. Critical in firewall and load balancer rules.
+
+- name: cidr-ls
+  alias: [cidr-list,cidr-table,cidrls]
+  syntax: |
+    /8    = 16,777,216 IPs (e.g. 10.0.0.0)  
+    /16   = 65,536 IPs (e.g. 192.168.0.0)  
+    /24   = 256 IPs, 254 usable (standard LAN)  
+    /30   = 4 IPs, 2 usable (point-to-point)  
+    /32   = 1 IP (single host)  
+    Usable IPs = Total - Network - Broadcast
+  description: CIDR blocks define subnet sizes. Smaller mask = larger subnet. Useful in firewalling, VPC design, and route planning.
+
+- name: subnetting
+  alias: [subnet,subnetting]
+  syntax: |
+    Breaks large IP block into smaller subnets  
+    Helps isolate networks (e.g. frontend vs backend)  
+    Supports hierarchical IP allocation  
+    Tools: `ipcalc`, `subnetcalc`, `cidr.xyz`  
+    /24 → 4x /26 (each has 64 IPs)  
+  description: Subnetting is slicing IP space to reduce broadcast domains and control traffic. Vital in cloud VPC and corporate nets.
+
+- name: ip-classes
+  alias: [ip-class,classful, ipcls, ipclass]
+  syntax: |
+    Class A: 1.0.0.0 – 126.0.0.0 → /8  
+    Class B: 128.0.0.0 – 191.255.0.0 → /16  
+    Class C: 192.0.0.0 – 223.255.255.0 → /24  
+    Class D: 224.0.0.0 – 239.255.255.255 → Multicast  
+    Class E: 240.0.0.0+ → Experimental  
+  description: Old-school IP classification. Modern networks use CIDR, but class knowledge still matters for legacy systems & exams.
+
+- name: osi-model
+  alias: [osi,layer-model]
+  syntax: |
+    Layer 7 - Application (HTTP, SSH)  
+    Layer 6 - Presentation (SSL, encoding)  
+    Layer 5 - Session (RPC, NetBIOS)  
+    Layer 4 - Transport (TCP/UDP)  
+    Layer 3 - Network (IP, BGP, OSPF)  
+    Layer 2 - Data Link (Ethernet, VLAN)  
+    Layer 1 - Physical (Cable, Fiber)  
+  description: OSI is a theoretical model to explain network layers. Debugging often maps from L1 (wires) to L7 (apps).
+
+- name: tcp-ip-model
+  alias: [tcpip,network-stack]
+  syntax: |
+    Application: HTTP, DNS, SMTP  
+    Transport: TCP, UDP  
+    Internet: IP, ICMP  
+    Network Access: Ethernet, Wi-Fi  
+    4-layer practical model (used in real stacks)  
+  description: TCP/IP model is the real-world version of OSI. Used in Linux, Cisco, cloud networking.
+
+- name: common-ports
+  alias: [ports,well-known-ports]
+  syntax: |
+    Port = Logical endpoint for app/service  
+    Well-known:  
+      - 22 (SSH), 80 (HTTP), 443 (HTTPS)  
+      - 53 (DNS), 25 (SMTP), 3306 (MySQL)  
+    Registered range: 1024–49151  
+    Ephemeral: 49152–65535  
+  description: Ports identify services. Critical for firewall config, service exposure, and SRE debugging.
+
+- name: bgp-deep
+  alias: [bgp,bgp-path]
+  syntax: |
+    Path vector protocol  
+    eBGP (external) uses TTL=1, iBGP (internal) uses full mesh  
+    Attributes: AS_PATH, NEXT_HOP, LOCAL_PREF, MED  
+    Default route: 0.0.0.0/0 advertisement  
+    BGP hijacking: Malicious prefix injection  
+    Used in: GCP Cloud Router, AWS TGW, IXPs  
+  description: BGP controls how Internet routes flow. Cloud networking and edge peering heavily depend on it.
+
+- name: switch
+  alias: [switch,l2switch]
+  syntax: |
+    Layer 2 device  
+    Uses MAC address table to forward frames  
+    Full-duplex & collision-free  
+    Supports VLAN tagging (802.1Q)  
+    No routing between networks (Layer 3 required)  
+    Smart switches support SNMP, VLAN, STP  
+  description: Switches are the backbone of LANs. They forward frames based on MACs and isolate traffic into broadcast domains.
+
+- name: lan
+  alias: [lan,local-area]
+  syntax: |
+    Local Area Network (LAN)  
+    Limited to a building/floor  
+    Devices: switches, routers, firewalls  
+    IP range: private (192.168.x.x, 10.x.x.x)  
+    High speed: 100Mbps to 10Gbps  
+    Segmented by VLANs for security  
+  description: LAN is your internal network — fast, secure, and isolated from the public. Vital for office infra and home labs.
+
+- name: wlan
+  alias: [wlan,wireless-lan]
+  syntax: |
+    Wireless LAN using Wi-Fi (IEEE 802.11)  
+    Frequency bands: 2.4GHz, 5GHz, 6GHz (Wi-Fi 6E)  
+    Modes: Infrastructure (AP), Ad-hoc  
+    WPA2/WPA3 for encryption  
+    SSID broadcast, DHCP by router/AP  
+  description: WLANs allow wireless access within a LAN. Crucial for mobility but requires encryption and good signal planning.
+
+- name: mac-address
+  alias: [mac,macaddr]
+  syntax: |
+    48-bit hardware address  
+    Format: 00:1A:2B:3C:4D:5E  
+    First 24 bits = OUI (vendor)  
+    Used by switches for L2 forwarding  
+    Can be spoofed for anonymity/test  
+  description: MAC is your NIC's fingerprint. Switches rely on it to move packets in LANs.
+
+- name: arp
+  alias: [arp,mac-resolve]
+  syntax: |
+    Resolves IP → MAC in LAN  
+    `arp -a` → View ARP table  
+    Gratuitous ARP: IP conflict detection  
+    ARP poisoning: MITM attack risk  
+    Protocol: RFC 826  
+  description: ARP bridges IP logic with MAC delivery. Key for L2 comms — and a popular attack vector too.
+
+- name: vlan
+  alias: [vlan,virtual-lan]
+  syntax: |
+    Logical LAN separation over the same switch  
+    Tagging via 802.1Q (VLAN ID 1–4094)  
+    Native VLAN = Untagged traffic  
+    Requires trunk ports to carry multiple VLANs  
+    Helps isolate traffic: dev vs prod, HR vs Eng  
+  description: VLANs slice your switch into isolated networks. Core concept for modern SRE and datacenter design.
+
+- name: layer2-vs-layer3
+  alias: [l2vsl3,network-layer]
+  syntax: |
+    Layer 2 (Switch): MAC based, no IP knowledge  
+    Layer 3 (Router): IP based, enables inter-VLAN routing  
+    L3 Switch: Combines both; routes between VLANs  
+    L2 = faster, L3 = smarter  
+  description: Distinguishing L2 and L3 helps in network design, especially in Kubernetes networking and multi-tier apps.
+
+- name: wireless-mesh
+  alias: [mesh,wireless-backhaul]
+  syntax: |
+    Multiple wireless nodes without centralized AP  
+    Self-healing, self-forming  
+    Used in IoT, large campuses, or mesh Wi-Fi kits  
+    Latency increases per hop  
+    May include Ethernet backhaul for stability  
+  description: Mesh WLANs allow flexible coverage but need tuning for performance. Real SRE stuff for smart homes or campus nets.
+
+- name: firewall
+  alias: [fw,firewall]
+  syntax: |
+    Controls traffic using rules (allow/deny)  
+    Works on L3 (IP), L4 (TCP/UDP), L7 (HTTP)  
+    Types: stateless (iptables), stateful (firewalld, ufw)  
+    Can filter: src IP, dst port, protocol, time  
+    Zones: internal, public, dmz (firewalld)  
+  description: A firewall is your perimeter guard. It blocks bad stuff before it hits your app or OS.
+
+- name: icmp
+  alias: [icmp,ping]
+  syntax: |
+    Internet Control Message Protocol (L3)  
+    Used for diagnostics (ping, traceroute)  
+    Common types: 0 = echo reply, 8 = echo request  
+    Firewalls often block ICMP (esp. on prod)  
+    Stateless, no ports (unlike TCP/UDP)  
+  description: ICMP is how devices say "yo, you up?" — critical for reachability tests and network health checks.
+
+- name: packets
+  alias: [packet,network-packet]
+  syntax: |
+    Basic unit of data in networking  
+    Contains: Header (IP, TCP/UDP), Payload (data)  
+    Routed by IP, Delivered by MAC  
+    Fragmentation if size > MTU (usually 1500 bytes)  
+    Packet loss = network issues or drops  
+  description: Packets are chunks of data flying through your network. SREs must know them to troubleshoot latency, loss, or app slowness.
+
+- name: frame
+  alias: [frame,dataframe]
+  syntax: |
+    Layer 2 data unit (Ethernet Frame)  
+    Structure: Preamble | MAC Src | MAC Dst | Type | Payload | CRC  
+    Only travels inside LAN  
+    Gets stripped once routing (L3) occurs  
+    Used by switches to forward traffic  
+  description: Frames are L2 envelopes around packets. They stay local and define how switches handle your traffic.
+
+- name: mtu
+  alias: [mtu,max-transmission-unit]
+  syntax: |
+    Max packet size: default 1500 bytes (Ethernet)  
+    Higher MTU = fewer packets, lower CPU  
+    Too high? = fragmentation or drop  
+    Adjust via: `ip link set dev eth0 mtu 1400`  
+    Used in VPN/tunnels to avoid PMTUD issues  
+  description: MTU tuning is low-key important. It affects VPN, Kubernetes CNI, and performance during file transfers.
+
+
