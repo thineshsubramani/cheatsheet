@@ -3,217 +3,400 @@
   syntax: compiled
   description: Aggregated Linux commands for DevOps/SRE
 
-- name: ls
-  alias: [list, files, dir]
+- name: file-operations
+  alias: [file, fs]
   syntax: |
-    ls -la            # list all with hidden & details
-    tree              # show folder structure
-  description: List files and folders
+    ls -la                    # list with details
+    cp -a src dest            # archive copy
+    mv old new                # rename/move
+    rm -i file                # interactive delete
+    touch file                # create empty file
+    mkdir -p path             # create dir with parents
+  description: Basic file operations
 
-- name: system
-  alias: [sys, info, status]
+- name: file-view
+  alias: [view, cat]
   syntax: |
-    uname -a          # kernel + arch + OS
-    uptime            # how long system is up
-    hostname -I       # get local IP
-    top               # live process view
-    htop              # better top (needs install)
-    free -h           # RAM usage human-readable
-    vmstat 1          # CPU/mem/swap live stats
-  description: System info and status
+    cat file                  # view entire file
+    less file                 # paged view
+    head -n 20 file           # first 20 lines
+    tail -f file              # follow log
+    grep "text" file          # search in file
+    wc -l file                # count lines
+  description: File viewing/searching
 
-- name: disk
-  alias: [disk, storage, mount]
+- name: permissions
+  alias: [perms, chmod]
   syntax: |
-    df -h             # disk usage per mount
-    du -sh *          # folder sizes in current dir
-    lsblk             # block devices info
-    mount             # show mounted filesystems
-    findmnt           # tree of mount points
-  description: Disk, mounts, and usage
+    chmod 755 file            # rwxr-xr-x
+    chown user:group file     # change owner
+    chgrp group file          # change group
+    umask 022                 # default permissions
+    stat file                 # view permissions
+  description: File permissions/ownership
 
-- name: network
-  alias: [net, netstat, ip]
+- name: process-management
+  alias: [proc, ps]
   syntax: |
-    ip a              # show IPs
-    ss -tuln          # show open ports
-    netstat -tulnp    # legacy, same as ss (needs net-tools)
-    ping 8.8.8.8      # basic connectivity check
-    dig google.com    # DNS resolution
-    traceroute 8.8.8.8 # trace route to host
-    curl -I URL       # check HTTP headers
-  description: Network debug & connectivity
+    ps aux                    # all processes
+    top                       # live view
+    htop                      # enhanced top
+    kill -9 PID               # force kill
+    pkill name                # kill by name
+    pgrep name                # find PID
+    nice -n 10 command        # set priority
+    renice 5 -p PID           # change priority
+  description: Process control
 
-- name: files
-  alias: [file, cat, grep]
+- name: networking
+  alias: [net, ip]
   syntax: |
-    cat file          # view file content
-    tail -f file      # live log tail
-    head -n 20 file   # first 20 lines
-    less file         # scrollable view
-    grep "text" file  # search in file
-    awk '{print $1}'  # column print
-    sed 's/old/new/g' # replace text inline
-  description: File reading, parsing
+    ip a                      # interfaces
+    ss -tulnp                 # sockets
+    ping host                 # connectivity
+    traceroute host           # route tracing
+    dig domain                # DNS lookup
+    netstat -tulnp            # legacy netstat
+    curl -I url               # HTTP headers
+    wget url                  # download
+    nmap host                 # port scan
+  description: Network diagnostics
 
-- name: package
-  alias: [pkg, apt, yum]
+- name: system-info
+  alias: [sys, info]
   syntax: |
-    apt update && apt upgrade   # Debian/Ubuntu update
-    yum update                  # RHEL/CentOS update
-    dpkg -l | grep package      # check if package is installed
-  description: Package manager commands
+    uname -a                  # kernel info
+    lscpu                     # CPU details
+    free -h                   # memory
+    df -h                     # disk usage
+    uptime                    # system uptime
+    lsblk                     # block devices
+    lspci                     # PCI devices
+    lsusb                     # USB devices
+  description: System hardware info
 
-- name: services
-  alias: [svc, svcs, service]
+- name: package-management
+  alias: [pkg, apt]
   syntax: |
-    systemctl status nginx      # check service status
-    systemctl restart nginx     # restart service
-    journalctl -u nginx         # view service logs
-    systemctl enable nginx      # auto-start on boot
-  description: Systemd service management
+    apt update                # Debian update
+    apt install package       # install
+    apt remove package        # remove
+    dpkg -i package.deb       # install .deb
+    yum install package       # RHEL install
+    snap install package      # snap package
+  description: Package management
 
-- name: users
-  alias: [user, uid, groups]
+- name: service-management
+  alias: [svc, systemd]
   syntax: |
-    whoami              # current user
-    id                  # user UID/GID
-    groups              # list user groups
-    sudo su - user      # switch user
-    useradd -m user     # create user with home dir
-    passwd user         # set/change password
-  description: User and permission basics
+    systemctl start service   # start
+    systemctl stop service    # stop
+    systemctl restart service # restart
+    systemctl status service  # status
+    journalctl -u service     # logs
+    systemctl enable service  # enable on boot
+  description: Service control
 
-- name: processes
-  alias: [proc, ps, kill]
+- name: user-management
+  alias: [user, auth]
   syntax: |
-    ps aux              # show all processes
-    kill -9 PID         # force kill process
-    pkill -f name       # kill by process name
-  description: Process inspection and kill
+    whoami                    # current user
+    id                        # user info
+    sudo -i                   # root shell
+    useradd user              # add user
+    passwd user               # set password
+    usermod -aG group user    # add to group
+    last                      # login history
+  description: User accounts
 
-- name: archive
-  alias: [tar, zip, compress]
+- name: compression
+  alias: [zip, tar]
   syntax: |
-    tar -czf file.tar.gz dir   # compress dir
-    tar -xzf file.tar.gz       # extract archive
-    zip -r file.zip dir        # zip a folder
-    unzip file.zip             # unzip file
-  description: Compress and extract files
+    tar -czf archive.tar dir  # create tar.gz
+    tar -xzf archive.tar      # extract
+    gzip file                 # compress
+    gunzip file.gz            # decompress
+    zip -r archive.zip dir    # create zip
+    unzip archive.zip         # extract zip
+  description: File compression
 
-- name: perms
-  alias: [chmod, chown, permissions]
+- name: text-processing
+  alias: [text, awk]
   syntax: |
-    chmod +x file         # make file executable
-    chown user:group file # change owner
-    ls -l                 # show file perms
-    chmod u+s bin         # SUID: run as file owner (e.g. root)
-    chmod g+s dir         # SGID: files in dir inherit group
-    chmod +t /tmp         # Sticky: only owner can delete files
-  description: File permissions and ownership
+    grep pattern file         # search
+    awk '{print $1}' file     # column
+    sed 's/old/new/g' file    # replace
+    cut -d: -f1 /etc/passwd   # field extract
+    sort file                 # sort
+    uniq file                 # unique lines
+    wc -l file                # line count
+  description: Text manipulation
 
-- name: logs
-  alias: [log, syslog, journal]
+- name: disk-utils
+  alias: [disk, storage]
   syntax: |
-    tail -n 100 /var/log/syslog     # view last 100 lines
-    journalctl -xe                  # system logs with errors
-    dmesg | less                    # kernel logs
-  description: System and service logs
+    fdisk -l                  # partitions
+    mount /dev/sdX /mnt       # mount
+    umount /mnt               # unmount
+    df -h                     # usage
+    du -sh dir                # dir size
+    lsblk                     # block devices
+    blkid                     # UUIDs
+  description: Disk management
 
-- name: ssh
-  alias: [ssh, scp, rsync]
+- name: kernel-modules
+  alias: [mod, modules]
   syntax: |
-    ssh user@host              # connect to remote
-    scp file user@host:/path   # copy file to remote
-    rsync -avz src/ user@host:/dst # sync with compression
-  description: Remote login and file transfer
+    lsmod                     # loaded modules
+    modinfo module            # module info
+    insmod module.ko          # insert module
+    rmmod module              # remove module
+    dmesg | tail              # kernel messages
+  description: Kernel modules
 
-- name: docker
-  alias: [docker, container, images]
+- name: cron-jobs
+  alias: [cron, schedule]
   syntax: |
-    docker ps -a               # all containers
-    docker images              # list images
-    docker exec -it id bash    # shell into container
-    docker logs -f id          # follow container logs
-  description: Common Docker commands
+    crontab -l                # list jobs
+    crontab -e                # edit jobs
+    systemctl restart cron    # restart service
+  description: Scheduled tasks
 
-- name: docker
-  alias: [docker, container, images]
+- name: ssh-remote
+  alias: [ssh, remote]
   syntax: |
-    docker ps -a               # all containers
-    docker images              # list images
-    docker exec -it id bash    # shell into container
-    docker logs -f id          # follow container logs
+    ssh user@host             # connect
+    scp file user@host:path   # copy
+    rsync -avz src dest       # sync
+    ssh-keygen                # keygen
+    ssh-copy-id user@host     # copy key
+  description: Remote access
 
-- name: procfs
-  alias: [procfs, proc]
+- name: environment
+  alias: [env, vars]
   syntax: |
-    cat /proc/cpuinfo         # CPU details
-    cat /proc/meminfo         # Memory info
-    cat /proc/uptime          # System uptime
-    cat /proc/$$/status       # Specific process info
+    env                       # all vars
+    printenv VAR              # specific var
+    export VAR=value          # set var
+    unset VAR                 # unset var
+    alias ll='ls -la'         # create alias
+  description: Environment vars
 
-- name: sysfs
-  alias: [sysfs, sys]
+- name: logging
+  alias: [log, journal]
   syntax: |
-    cat /sys/class/net/eth0/operstate   # NIC up/down?
-    cat /sys/block/sda/size             # Disk size
+    journalctl -xe            # system logs
+    tail -f /var/log/syslog   # syslog
+    dmesg                     # kernel log
+    logger "message"          # add to syslog
+  description: System logging
 
-- name: etc
-  alias: [config, etc]
+- name: performance
+  alias: [perf, monitor]
   syntax: |
-    cat /etc/passwd         # users list
-    cat /etc/group          # groups list
-    cat /etc/hosts          # static DNS
-    ls /etc/network/        # network config (older distros)
-    ls /etc/systemd/        # systemd services
+    vmstat 1                  # virtual mem
+    iostat 1                 # disk I/O
+    mpstat 1                 # CPU stats
+    sar                      # system stats
+    nmon                     # interactive
+  description: Performance monitoring
 
-- name: var_log
-  alias: [logs, varlog]
+- name: security
+  alias: [sec, audit]
   syntax: |
-    tail /var/log/syslog         # system messages
-    tail /var/log/auth.log       # login/auth attempts
-    tail /var/log/kern.log       # kernel logs
-    dmesg                        # boot-time logs
+    sudo -l                   # sudo access
+    passwd -S user            # password status
+    chage -l user             # password expiry
+    lastb                     # failed logins
+    fail2ban-client status    # fail2ban
+    ufw status                # firewall
+  description: Security tools
 
-- name: dev
-  alias: [devices, dev]
+- name: hardware-info
+  alias: [metal, hw, hwinfo, hwinfos, hw-info]
+  description: Bare metal hardware interrogation
   syntax: |
-    ls -l /dev/sda       # first disk
-    ls -l /dev/null      # bitbucket
-    ls -l /dev/tty       # terminal
+    # CPU
+    lscpu | grep -E "Model name|MHz|Core|Socket|Stepping"
+    dmidecode -t processor | grep "Version:"
+    cat /proc/cpuinfo | grep "model name" | head -1
 
-- name: kernel_and_hardware
-  alias: [kernel, hardware, cpu]
+    # RAM
+    dmidecode -t memory | grep -E "Size:|Type:|Speed:" | grep -v "No Module"
+    cat /proc/meminfo | grep "MemTotal"
+
+    # Disks
+    lsblk -d -o NAME,MODEL,SIZE,ROTA,TRAN | grep -v "NAME"
+    hdparm -I /dev/sda | grep -E "Model|Speed|capacity"
+    smartctl -i /dev/sda | grep -E "Model|Capacity|Rotation"
+
+    # GPU
+    lspci -nn | grep -i "vga\|3d\|display"
+    nvidia-smi -L 2>/dev/null || echo "No NVIDIA GPU"
+
+    # Network
+    lspci -nn | grep -i "ethernet\|network"
+    ethtool eth0 | grep -E "Speed|Duplex"
+
+    # Motherboard
+    dmidecode -t baseboard | grep -E "Manufacturer|Product"
+    dmidecode -t bios | grep -E "Vendor|Version"
+
+- name: hardware-monitoring
+  alias: [hwmon, sensors]
+  description: Real-time hardware monitoring and sensor data
   syntax: |
-    uname -r              # kernel version
-    uname -a              # kernel + arch + hostname
-    hostnamectl           # OS and kernel info
-    lscpu                 # CPU info
-    lsblk                 # block devices (disk)
-    lspci                 # PCI devices (GPU/NIC)
-    lsusb                 # USB devices
-    free -h               # RAM usage
-    dmidecode             # BIOS, serial, board info
-    cat /proc/cpuinfo     # raw CPU info
-    cat /proc/meminfo     # raw RAM info
-    cat /proc/version     # kernel version string
+    # CPU Monitoring
+    mpstat 1                   # CPU usage per core
+    sensors                    # Temperature readings
+    cat /proc/loadavg          # System load average
+    
+    # RAM Monitoring
+    vmstat 1                   # Virtual memory stats
+    top -o %MEM                # Memory usage by process
+    
+    # Disk Monitoring
+    iostat -xz 1               # Disk I/O statistics
+    iotop -o                   # Disk I/O by process
+    
+    # GPU Monitoring
+    nvidia-smi -l 1            # NVIDIA GPU stats (continuous)
+    radeontop                  # AMD GPU stats (if installed)
+    
+    # Network Monitoring
+    iftop                      # Bandwidth usage
+    nload                      # Network traffic
+    ip -s link                 # Interface statistics
 
-- name: users_groups
-  alias: [users, groups, accounts]
+- name: hardware-benchmark
+  alias: [benchmark, hwtest]
+  description: Hardware performance testing and benchmarking
   syntax: |
-    whoami                  # current user
-    id                      # UID, GID, groups
-    groups                  # current user's groups
-    getent passwd user      # user info
-    getent group group      # group info
+    # CPU Benchmark
+    stress --cpu 4 --timeout 30s  # Stress test CPU
+    sysbench cpu --threads=4 run  # CPU benchmark
+    
+    # Disk Benchmark
+    hdparm -Tt /dev/sda       # Disk read speed
+    dd if=/dev/zero of=tempfile bs=1M count=1024 conv=fdatasync  # Write test
+    ioping -c 10 /            # Disk latency
+    
+    # RAM Benchmark
+    sysbench memory --memory-block-size=1K --memory-total-size=10G run
+    memtester 1G 1            # Test 1GB RAM
+    
+    # Network Benchmark
+    iperf3 -c server_ip       # Network throughput
+    ping -c 10 google.com     # Latency test
+    mtr google.com            # Network path analysis
 
-    adduser newuser         # create new user (Debian)
-    useradd -m newuser      # create user + home dir
-    passwd newuser          # set password
 
-    usermod -aG sudo user   # add user to sudo
-    groupadd devs           # create group
-    gpasswd -a user devs    # add user to group
-    deluser user            # remove user
-    delgroup group          # remove group
+- name: time
+  alias: [date, ntp]
+  syntax: |
+    date                      # current time
+    timedatectl               # time config
+    ntpq -p                   # NTP peers
+    hwclock                   # hardware clock
+  description: Time management
+
+- name: important-directories
+  alias: [dirs, fs-hierarchy]
+  description: Key Linux directories and their purposes
+  syntax: |
+    /               # Root directory
+    /bin           # Essential user binaries
+    /sbin          # System admin binaries
+    /etc           # Configuration files
+    /root          # Root user's home
+    /var           # Variable data (logs, etc.)
+    /tmp           # Temporary files
+    /usr           # User programs & data
+    /opt           # Optional/third-party software
+    /boot          # Boot loader files
+    /dev           # Device files
+    /proc          # Process & kernel info
+    /sys           # Kernel devices/system info
+    /mnt           # Temporary mount points
+    /media         # Removable media mounts
+    /lib           # Essential shared libraries
+    /run           # Runtime variable data
+
+- name: iptables-firewall
+  alias: [iptables, netfilter, iptable]
+  description: Packet filtering firewall (traditional Linux)
+  syntax: |
+    sudo iptables -L -v -n      # List rules
+    sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT  # Allow SSH
+    sudo iptables -A INPUT -j DROP  # Default deny
+    sudo iptables-save > /etc/iptables.rules  # Save rules
+    sudo iptables-restore < /etc/iptables.rules  # Load rules
+    sudo iptables -F            # Flush all rules
+    sudo iptables -P INPUT DROP # Set default policy
+
+- name: ufw-firewall
+  alias: [ufw, simple-firewall]
+  description: Uncomplicated Firewall (user-friendly)
+  syntax: |
+    sudo ufw enable             # Enable firewall
+    sudo ufw disable            # Disable firewall
+    sudo ufw status verbose     # Show status
+    sudo ufw allow 22/tcp       # Allow SSH
+    sudo ufw deny from 1.2.3.4  # Block IP
+    sudo ufw delete allow 22    # Remove rule
+    sudo ufw reset              # Reset all rules
+
+- name: firewalld
+  alias: [firewalld, dynamic-firewall]
+  description: Dynamic firewall daemon (common on RHEL/CentOS)
+  syntax: |
+    sudo firewall-cmd --state              # Check status
+    sudo firewall-cmd --reload             # Reload rules
+    sudo firewall-cmd --list-all           # List all rules
+    sudo firewall-cmd --add-service=http   # Allow HTTP
+    sudo firewall-cmd --add-port=8080/tcp  # Allow port
+    sudo firewall-cmd --runtime-to-permanent  # Save rules
+
+- name: apparmor
+  alias: [apparmor, security-profile]
+  description: Mandatory Access Control (MAC) security
+  syntax: |
+    sudo aa-status               # Show status
+    sudo apparmor_parser -r /etc/apparmor.d/*  # Reload profiles
+    sudo aa-complain /path/to/bin  # Set to complain mode
+    sudo aa-enforce /path/to/bin   # Set to enforce mode
+    journalctl -u apparmor --no-pager | tail -20  # View logs
+
+- name: selinux
+  alias: [selinux, mac-security]
+  description: Security-Enhanced Linux (common on RHEL)
+  syntax: |
+    sestatus                 # Check status
+    getenforce               # Current mode
+    sudo setenforce 1        # Set enforcing (0=permissive)
+    ls -Z                    # View file contexts
+    ps -Z                    # View process contexts
+    sudo restorecon -Rv /path  # Fix contexts
+    sudo semanage port -a -t http_port_t -p tcp 8080  # Allow port
+
+- name: kernel-hardening
+  alias: [sysctl, kernel-security]
+  description: Kernel security parameters
+  syntax: |
+    sudo sysctl -a | grep security  # View security settings
+    sudo sysctl -w kernel.yama.ptrace_scope=2  # Restrict ptrace
+    cat /proc/sys/kernel/randomize_va_space  # Check ASLR status
+    sudo grep -i grub /boot/grub2/grub.cfg  # Check boot params
+    dmesg | grep -i "protection"  # View active protections
+
+- name: security-audit
+  alias: [audit, lynis]
+  description: System security auditing tools
+  syntax: |
+    sudo lynis audit system     # Comprehensive audit
+    sudo apt install lynis      # Install on Debian
+    sudo yum install lynis      # Install on RHEL
+    sudo ausearch -m avc -ts recent  # SELinux denials
+    sudo auditctl -l           # View audit rules
+    sudo chkrootkit            # Rootkit check
+    sudo rkhunter --checkall   # Malware scan
