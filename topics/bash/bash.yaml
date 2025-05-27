@@ -92,14 +92,6 @@
     esac
   description: Switch-case logic
 
-- name: file-check
-  alias: [filetest]
-  syntax: |
-    if [[ -f file.txt ]]; then
-      echo "file exists"
-    fi
-  description: File existence check
-
 - name: exec-subshell
   alias: [subshell, exec]
   syntax: |
@@ -161,6 +153,7 @@
     set +x                  # disable
     bash -x script.sh       # run script with debug
   description: Trace and debug Bash scripts
+
 - name: error-handling
   alias: [fail, traperr]
   syntax: |
@@ -191,115 +184,3 @@
     ./heavy.sh &             # run in background
     wait $!                  # wait for bg job
   description: Run and control background tasks
-
-- name: process-monitoring
-  alias: [procmon, top]
-  syntax: |
-    ps aux | grep nginx      # check for process
-    pidof nginx              # get PID
-    kill -9 $pid             # force kill
-  description: Process monitoring and control
-
-- name: cron-format
-  alias: [schedule, cron]
-  syntax: |
-    # ┌ min (0-59)
-    # │ ┌ hour (0-23)
-    # │ │ ┌ day of month (1-31)
-    # │ │ │ ┌ month (1-12)
-    # │ │ │ │ ┌ day of week (0-6, Sunday=0)
-    # │ │ │ │ │
-    # * * * * * /script.sh
-  description: Cron job time expression breakdown
-
-- name: file-permissions
-  alias: [chmod, chown]
-  syntax: |
-    chmod 755 script.sh       # rwxr-xr-x
-    chown user:group file     # change owner
-  description: File permission & ownership
-
-- name: system-info
-  alias: [sysinfo, diag]
-  syntax: |
-    uname -a                  # kernel info
-    lsb_release -a            # distro details
-    df -h                     # disk usage
-    free -m                   # memory usage
-  description: Host diagnostics & inventory
-
-- name: networking
-  alias: [net, conn]
-  syntax: |
-    ip a                      # interface details
-    ss -tulnp                 # socket summary
-    ping -c3 8.8.8.8          # basic test
-    dig google.com            # DNS query
-  description: System-level network diagnostics
-
-- name: log-rotation
-  alias: [logs, logrotate]
-  syntax: |
-    logrotate /etc/logrotate.conf
-    tail -n 100 /var/log/syslog
-  description: Handle and read system logs
-
-- name: long-running-scripts
-  alias: [timeout, nohup]
-  syntax: |
-    nohup ./deploy.sh > out.log 2>&1 &
-    timeout 300 ./task.sh        # kill after 5min
-  description: Run or timeout long processes
-
-- name: check-service
-  alias: [svc, systemd]
-  syntax: |
-    systemctl status nginx       # check status
-    systemctl restart nginx      # restart service
-  description: Check & manage services (systemd)
-
-- name: validate-config
-  alias: [lint, sanity]
-  syntax: |
-    nginx -t                     # nginx config test
-    apachectl configtest         # apache
-    named-checkconf              # bind9
-  description: Sanity checks for infra config files
-
-- name: disk-health
-  alias: [smartctl, diskchk]
-  syntax: |
-    smartctl -a /dev/sda         # SMART stats
-    iostat -xz 1                 # disk I/O stats
-  description: Monitor disk health and IO
-
-- name: audit-security
-  alias: [audit, secure]
-  syntax: |
-    sudo lastlog                 # last login audit
-    sudo faillog -a              # failed logins
-    sudo auditctl -l             # audit rules
-  description: Security + access audit tools
-
-- name: ssh-script-loop
-  alias: [sshloop, remexec]
-  syntax: |
-    for host in host1 host2; do
-      ssh "$host" 'uptime'
-    done
-  description: Execute commands over SSH fleet
-
-- name: environment-control
-  alias: [envset, export]
-  syntax: |
-    export ENV=production        # export var
-    env | grep ENV               # list
-  description: Manage shell environment variables
-
-- name: build-release
-  alias: [build, release]
-  syntax: |
-    version="1.0.$(date +%s)"
-    echo "Release $version"
-    tar czf release-$version.tar.gz ./build
-  description: Simple script-based release versioning
