@@ -89,11 +89,31 @@
 - name: cidr-ls
   alias: [cidr-list,cidr-table,cidrls]
   syntax: |
-    /8    = 16,777,216 IPs (e.g. 10.0.0.0)  
-    /16   = 65,536 IPs (e.g. 192.168.0.0)  
-    /24   = 256 IPs, 254 usable (standard LAN)  
-    /30   = 4 IPs, 2 usable (point-to-point)  
-    /32   = 1 IP (single host)  
+    /8   = 16,777,216 IPs, 16,777,214 usable   # range 10.0.0.1     - 10.255.255.254     # Large org VPC block
+    /9   = 8,388,608 IPs, 8,388,606 usable     # range 10.128.0.1   - 10.255.255.254     # Large region subnet
+    /10  = 4,194,304 IPs, 4,194,302 usable     # range 10.192.0.1   - 10.255.255.254     # Multi-AZ subnet
+    /11  = 2,097,152 IPs, 2,097,150 usable     # range 10.224.0.1   - 10.255.255.254     # Huge app clusters
+    /12  = 1,048,576 IPs, 1,048,574 usable     # range 10.240.0.1   - 10.255.255.254     # Big region-sized subnet
+    /13  = 524,288 IPs, 524,286 usable         # range 10.248.0.1   - 10.255.255.254     # Large SaaS product
+    /14  = 262,144 IPs, 262,142 usable         # range 10.252.0.1   - 10.255.255.254     # Multi-department net
+    /15  = 131,072 IPs, 131,070 usable         # range 10.254.0.1   - 10.255.255.254     # Two AZs in AWS
+    /16  = 65,536 IPs, 65,534 usable           # range 10.245.0.1   - 10.245.255.254     # Single VPC block (AWS default)
+    /17  = 32,768 IPs, 32,766 usable           # range 10.245.128.1 - 10.245.255.254     # Half VPC subnet
+    /18  = 16,384 IPs, 16,382 usable           # range 10.245.192.1 - 10.245.255.254     # Mid-size workloads
+    /19  = 8,192 IPs, 8,190 usable             # range 10.245.224.1 - 10.245.255.254     # Medium-size app subnet
+    /20  = 4,096 IPs, 4,094 usable             # range 10.245.240.1 - 10.245.255.254     # Small service mesh
+    /21  = 2,048 IPs, 2,046 usable             # range 10.245.248.1 - 10.245.255.254     # Tiny service group
+    /22  = 1,024 IPs, 1,022 usable             # range 10.245.252.1 - 10.245.255.254     # 1 AZ, tight group
+    /23  = 512 IPs, 510 usable                 # range 10.245.254.1 - 10.245.255.254     # Split subnet for HA
+    /24  = 256 IPs, 254 usable                 # range 10.245.255.1 - 10.245.255.254     # Classic LAN, 1 AZ AWS subnet
+    /25  = 128 IPs, 126 usable                 # range 10.245.255.129 - 10.245.255.254   # DMZ or edge devices
+    /26  = 64 IPs, 62 usable                   # range 10.245.255.193 - 10.245.255.254   # VPN, office link
+    /27  = 32 IPs, 30 usable                   # range 10.245.255.225 - 10.245.255.254   # Small container group
+    /28  = 16 IPs, 14 usable                   # range 10.245.255.241 - 10.245.255.254   # 1–2 service instances
+    /29  = 8 IPs, 6 usable                     # range 10.245.255.249 - 10.245.255.254   # Load balancer + HA pair
+    /30  = 4 IPs, 2 usable                     # range 10.245.255.252 - 10.245.255.253   # Point-to-point / gateway
+    /31  = 2 IPs, 2 usable                     # range 10.245.255.252 - 10.245.255.253   # Router-to-router (RFC 3021)
+    /32  = 1 IP, 1 usable                      # range 10.245.255.254 - 10.245.255.254   # Loopback, host route
     Usable IPs = Total - Network - Broadcast
   description: CIDR blocks define subnet sizes. Smaller mask = larger subnet. Useful in firewalling, VPC design, and route planning.
 
